@@ -1,0 +1,168 @@
+@import "src/styles";
+
+/* Estilos para el contenedor principal */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.247);
+    border-radius: 16px;
+}
+
+/* Estilos para la cabecera del chat */
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Estilos para el título del chat */
+.chat-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.chat-title h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.chat-title span {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* Estilos para los botones de la cabecera */
+.chat-actions button {
+    background: transparent;
+    border: none;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+/* Estilos para el cuerpo del chat */
+.chat-body {
+    flex: 1;
+    overflow-y: scroll;
+}
+
+/* Estilos para la lista de mensajes */
+.message-list {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+/* Estilos para los elementos de mensaje */
+.message-item {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para los mensajes recibidos */
+.message-item.received .message-content {
+    background-color: #f5f5f5;
+    border-radius: 1rem 1rem 0 1rem;
+    padding: 0.5rem 1rem;
+    margin-right: auto;
+}
+
+/* Estilos para los mensajes enviados */
+.message-item.sent .message-content {
+    // background-color: #dcf8c6;
+    background-color: $secondary;
+    border-radius: 1rem 1rem 1rem 0;
+    padding: 0.5rem 1rem;
+    margin-left: auto;
+}
+
+/* Estilos para el contenido del mensaje */
+.message-content {
+    max-width: 80%;
+}
+
+.message-content p {
+    margin: 0; /* Elimina el margen predeterminado del párrafo */
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.message-time {
+    font-size: 0.8rem;
+    color: #999;
+    margin-left: 1rem;
+}
+    
+/* Estilos para el pie del chat */
+.chat-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+}
+
+/* Estilos para el cuadro de texto de entrada */
+.chat-footer textarea {
+    margin-right: 0.5rem;
+
+}
+/*.chat-footer textarea {
+    flex: 1;
+    border: none;
+    resize: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+}*/
+
+/* Estilos para el botón de envío */
+/*.chat-footer button {
+    background-color: #128c7e;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+}*/
+
+/* Estilos para el botón de búsqueda */
+.chat-header button:first-child {
+    margin-left: 0;
+}
+
+/* Estilos para el botón de adjuntar archivo */
+.chat-header button:nth-child(2) {
+    position: relative;
+}
+
+.chat-header button:nth-child(2) i:before {
+    content: "\f0c6";
+}
+
+.chat-header button:nth-child(2)::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    display: none;
+}
+
+.chat-header button:nth-child(2):hover::after {
+    display: block;
+}
+
+/* Estilos para el botón de opciones */
+.chat-header button:last-child i:before {
+    content: "\f141";
+}
