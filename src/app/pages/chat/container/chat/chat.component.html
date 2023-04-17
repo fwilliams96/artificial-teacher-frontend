@@ -1,0 +1,87 @@
+<main class="main">
+    <div class="page-header-jumbotron">
+
+        <div class="container">
+
+            <h1>Chat</h1>
+
+            <!--<p class="page-header-helper">
+                Escríbenos un mensaje con tu consulta y te responderemos lo antes posible.
+            </p>-->
+
+        </div>
+
+    </div>
+
+    <div class="page-content">
+        <div class="container-small">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <h3>ChatGPT</h3>
+                        <span>En línea</span>
+                    </div>
+                    <div class="chat-actions">
+                        <button>
+                            <!-- <i class="fas fa-search"></i> -->
+                            <fa-icon [icon]="faSearch"></fa-icon>
+                        </button>
+                        <button> 
+                            <!-- <i class="fas fa-paperclip"></i> -->
+                            <fa-icon [icon]="faPaperclip"></fa-icon>
+                        </button>
+                        <button>
+                            <!-- <i class="fas fa-ellipsis-v"></i> -->
+                            <fa-icon [icon]="faEllipsisV"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="chat-body">
+                    <div class="message-list">
+                        <ng-container *ngFor="let message of messages" [ngSwitch]="message.type">
+                            <ng-container *ngSwitchCase="'Received'">
+                                <ng-container [ngTemplateOutlet]="messageReceived"
+                                    [ngTemplateOutletContext]="{message}"
+                                ></ng-container>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'Sent'">
+                                <ng-container [ngTemplateOutlet]="messageSent"
+                                    [ngTemplateOutletContext]="{message}"
+                                ></ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="chat-footer">
+                    <textarea 
+                        placeholder="Escribe tu mensaje aquí"
+                        class="form-control"
+                        [(ngModel)]="message">
+                    </textarea>
+                    <button 
+                        class="btn btn-primary"
+                        (click)="sendMessage()">Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<ng-template #messageReceived let-message="message">
+    <div class="message-item received">
+        <div class="message-content">
+            <p>{{ message.content }}</p>
+            <span class="message-time">{{ message.date }}</span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #messageSent let-message="message">
+    <div class="message-item sent">
+        <div class="message-content">
+            <p>{{ message.content }}</p>
+            <span class="message-time">{{ message.date }}</span>
+        </div>
+    </div>
+</ng-template>

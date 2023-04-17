@@ -1,1 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
+// Required
+@import "../node_modules/bootstrap/scss/functions";
+// Required
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+$primary: #7746e6;
+$secondary: #f4ecff;
+// $btn-font-family: "Source Sans Pro";
+$btn-font-weight: bold;
+
+$theme-colors: (
+  "primary": $primary,
+  "danger": $danger,
+  "success": $success,
+  "info": $info
+);
+
+// Create your own map
+$custom-colors: (
+  "secondary": $secondary
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+h1 {
+    color: $primary;
+}
+
+a {
+    text-decoration: none;
+    color: #2b2f33;
+}
+
+.main {
+    // margin-top: 3.7rem;
+}
+
+.page-header-jumbotron,
+.page-header {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    text-align: center;
+}
+
+.page-header-jumbotron {
+    background: $secondary;
+}
+
+.page-content {
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+}
+
+.container {
+    width: 90%;
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+.container-small {
+    width: 60%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-control:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 0.2rem #7646e659;
+}
