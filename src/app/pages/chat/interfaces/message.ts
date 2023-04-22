@@ -1,8 +1,8 @@
 export interface Message {
     content: string
-    date: string
     type: MessageType,
-    conversationId?: string
+    transcription?: string | undefined,
+    urlAudioBlob?: string | undefined
 }
 
 export enum MessageType {

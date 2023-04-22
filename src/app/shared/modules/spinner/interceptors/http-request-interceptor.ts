@@ -23,7 +23,6 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('hola miarma')
     this._spinnerService.setLoading(true, request.url);
     return next.handle(request).pipe(tap(async (event: HttpEvent < any > ) => {
         if (event instanceof HttpResponse) {

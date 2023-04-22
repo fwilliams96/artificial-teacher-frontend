@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  backendDomain: 'http://localhost:3000',
+  backendDomain: 'http://localhost:8000',
   firebase: {
     apiKey: 'AIzaSyD0BkxjP-iJt6LctG6SLfm2y_bIFB37mBU',
     authDomain: 'ash-consulting-c12f3.firebaseapp.com',
