@@ -4,9 +4,11 @@
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    //height: 100%;
+    height: 60vh;
     border: 1px solid rgba(0, 0, 0, 0.247);
     border-radius: 16px;
+    //overflow: scroll;
 }
 
 /* Estilos para la cabecera del chat */
@@ -36,7 +38,7 @@
 }
 
 /* Estilos para los botones de la cabecera */
-.chat-actions button {
+.icon-button {
     background: transparent;
     border: none;
     margin-left: 0.5rem;
@@ -46,7 +48,8 @@
 /* Estilos para el cuerpo del chat */
 .chat-body {
     flex: 1;
-    overflow-y: scroll;
+    //overflow-y: scroll;
+    overflow: auto;
 }
 
 /* Estilos para la lista de mensajes */
@@ -165,4 +168,8 @@
 /* Estilos para el botón de opciones */
 .chat-header button:last-child i:before {
     content: "\f141";
+}
+
+.red {
+    color: rgba(255, 0, 0, 0.788);
 }

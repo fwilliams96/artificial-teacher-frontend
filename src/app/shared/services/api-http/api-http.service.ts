@@ -51,6 +51,37 @@ export class ApiHttpService {
     )
   }
 
+  public postFile<T> (
+    route: string,
+    formData: FormData,
+    params?: HttpParams
+  ) {
+    return this.http.post<T>(
+      this.createCompleteRoute(route, environment.backendDomain),
+      formData,
+      {params}
+    )
+  }
+
+    /**
+   * Method to post data
+   *
+   * @param route
+   * @param body
+   * @param params - Additional HttpParams
+   */
+    public postWithoutSuccessEntity<T>(
+      route: string,
+      body: T,
+      params?: HttpParams
+    ): Observable<T> {
+      return this.http.post<T>(
+        this.createCompleteRoute(route, environment.backendDomain),
+        body,
+        this.generateHeaders(params)
+      )
+    }
+
   /**
    * Method to update data
    *
