@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  backendDomain: 'https://ash-consulting-backend-production.up.railway.app',
+  backendDomain: 'https://fastapi-backend-production.up.railway.app',
   firebase: {
     apiKey: 'AIzaSyD0BkxjP-iJt6LctG6SLfm2y_bIFB37mBU',
     authDomain: 'ash-consulting-c12f3.firebaseapp.com',
