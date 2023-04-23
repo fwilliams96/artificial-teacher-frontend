@@ -198,6 +198,17 @@ export class ChatComponent implements AfterViewChecked {
       return;
     }
     if (this.audioBlob) {
+
+      /*this.blobToBase64(this.audioBlob).subscribe(
+        res => {
+
+        },
+        err => {
+          console.log(err);
+        }
+      )*/
+
+      
       this._chatVoiceService.sendVoiceAndReceiveText(this.contextId, this.audioBlob).subscribe(
         res => {
           const sentMessage: Message = {
@@ -224,6 +235,16 @@ export class ChatComponent implements AfterViewChecked {
       )
     }
   }
+
+  blobToBase64(blob: Blob): Observable<any> {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    return from(new Promise(resolve => {
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+    }));
+  };
 
   startConversation() {
 
