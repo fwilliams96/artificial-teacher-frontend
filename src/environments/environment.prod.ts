@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  backendDomain: 'http://46.101.139.146',
+  backendDomain: 'https://www.artificial-teacher.pro',
   firebase: {
     apiKey: 'AIzaSyD0BkxjP-iJt6LctG6SLfm2y_bIFB37mBU',
     authDomain: 'ash-consulting-c12f3.firebaseapp.com',
