@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChatComponent } from './container/chat/chat.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { ChatTextService } from './services/chat-text/chat-text.service';
+import { ChatService } from './services/chat/chat.service';
 
 @NgModule({
   declarations: [
@@ -14,6 +14,6 @@ import { ChatTextService } from './services/chat-text/chat-text.service';
     FontAwesomeModule,
     FormsModule
   ],
-  providers: [ChatTextService]
+  providers: [ChatService]
 })
 export class ChatModule { }

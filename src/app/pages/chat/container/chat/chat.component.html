@@ -18,21 +18,10 @@
             <div class="chat-container">
                 <div class="chat-header">
                     <div class="chat-title">
-                        <h3>ChatGPT</h3>
+                        <h3>Goku</h3>
                         <span>En línea</span>
                     </div>
-                    <!--<div class="chat-actions">
-                        <button class="icon-button">
-                            <fa-icon [icon]="faSearch"></fa-icon>
-                        </button>
-                        <button class="icon-button"> 
-                            <fa-icon [icon]="faPaperclip"></fa-icon>
-                        </button>
-                        <button class="icon-button">
-                            <fa-icon [icon]="faEllipsisV"></fa-icon>
-                        </button>
-                    </div>-->
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch" *ngIf="contextId">
                         <input class="form-check-input" type="checkbox" role="button" id="flexSwitchCheckDefault" [checked]="voiceEnabled" (change)="toggleVoice()">
                         <label class="form-check-label" for="flexSwitchCheckDefault">Voice</label>
                     </div>
@@ -98,7 +87,10 @@
 <ng-template #messageReceived let-message="message">
     <div class="message-item received">
         <div class="message-content">
-            <p>{{ message.content }}</p>
+            <p *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
+            <audio *ngIf="message.urlAudioBlob" controls>
+                <source [src]="sanitize(message.urlAudioBlob)" type="audio/wav" />
+            </audio>
             <span class="message-time">{{ message.date }}</span>
         </div>
     </div>

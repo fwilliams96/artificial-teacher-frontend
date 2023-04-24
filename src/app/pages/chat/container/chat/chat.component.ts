@@ -7,11 +7,9 @@ import {
   faPaperPlane,
   faTrash
 } from '@fortawesome/free-solid-svg-icons'
-import { ChatTextService } from '../../services/chat-text/chat-text.service';
 import { Message, MessageType } from '../../interfaces/message';
 import { Observable, from } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ChatVoiceService } from '../../services/chat-voice/chat-voice.service';
 import { ChatService } from '../../services/chat/chat.service';
 import { Context } from '../../interfaces/context';
 
@@ -51,8 +49,6 @@ export class ChatComponent implements AfterViewChecked {
   url : string | undefined = undefined
 
   constructor(
-    private readonly _chatTextService: ChatTextService,
-    private readonly _chatVoiceService: ChatVoiceService,
     private readonly _chatService: ChatService,
     private domSanitizer: DomSanitizer
   ) {}
@@ -69,6 +65,30 @@ export class ChatComponent implements AfterViewChecked {
     this.voiceEnabled = !this.voiceEnabled;
   }
 
+  startConversation() {
+
+    const context: Context = {
+      content: "Hello"
+    }
+
+    this._chatService.startConversation(context).subscribe(
+      res => {
+        this.contextId = res.context_id;
+        
+        const receivedMessage: Message = {
+          content: res.content,
+          type: MessageType.Received
+        };
+
+        this.addReceivedMessage(receivedMessage);
+      },
+      err => {
+        console.log(err);
+        
+      }
+    )
+  }
+
   sendText() {
     // console.log(this.message)
 
@@ -78,24 +98,43 @@ export class ChatComponent implements AfterViewChecked {
       return;
     }
 
-    const message: Message = {
+    const sentMessage: Message = {
       content: this.message,
       type: MessageType.Sent
     };
 
-    console.log("Sent message: ", message);
+    console.log("Sent message: ", sentMessage);
 
     if (this.voiceEnabled) {
-      //this._chatTextService.sendTextAndReceiveVoice().
+      this._chatService.sendTextAndReceiveVoice(this.contextId, sentMessage).subscribe(
+        res => {
+          console.log("Received audio: ", res);
+
+          const receivedMessage: Message = {
+            content: "",
+            type: MessageType.Received,
+            urlAudioBlob: URL.createObjectURL(res)
+          };
+
+          console.log("Received message: ", res);
+
+          this.addSentMessage(sentMessage);
+          this.addReceivedMessage(receivedMessage);
+          this.message = '';
+        },
+        err => {
+          console.log(err);
+        }
+      )
     }
     else {
-      this._chatTextService.sendTextAndReceiveText(this.contextId, message).subscribe(
+      this._chatService.sendTextAndReceiveText(this.contextId, sentMessage).subscribe(
         res => {
-          console.log("Received message: ", res)
-          res.type = MessageType.Received
-          this.addSentMessage(message)
-          this.addReceivedMessage(res)
-          this.message = ''
+          console.log("Received message: ", res);
+          res.type = MessageType.Received;
+          this.addSentMessage(sentMessage);
+          this.addReceivedMessage(res);
+          this.message = '';
         },
         err => {
           console.log(err)
@@ -105,33 +144,80 @@ export class ChatComponent implements AfterViewChecked {
 
   }
 
-  b64toBlob(b64Data: string, contentType: string) {
-	  const sliceSize = 512;
-	  const byteCharacters = atob(b64Data);
-	  const byteArrays = [];
+  sendRecording() {
+    if (!this.contextId) {
+      // TODO add something
+      console.error("There is no contextId");
+      return;
+    }
 
-	  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-		const slice = byteCharacters.slice(offset, offset + sliceSize);
+    if (this.audioBlob) {
 
-		const byteNumbers = new Array(slice.length);
-	    for (let i = 0; i < slice.length; i++) {
-	      byteNumbers[i] = slice.charCodeAt(i);
-	    }
+      if (this.voiceEnabled) {
+        this._chatService.sendVoiceAndReceiveVoice(this.contextId, this.audioBlob).subscribe(
+          res => {
 
-	    const byteArray = new Uint8Array(byteNumbers);
-	    byteArrays.push(byteArray);
-	  }
+            console.log("Received audio: ", res);
 
-	  const blob = new Blob(byteArrays, {type: contentType});
-	  return blob;
+            const sentMessage: Message = {
+              content: "",
+              type: MessageType.Sent,
+              urlAudioBlob: this.url
+            };
+  
+            const receivedMessage: Message = {
+              content: "",
+              type: MessageType.Received,
+              urlAudioBlob: URL.createObjectURL(res)
+            };
+
+            console.log("Sent message: ", sentMessage);
+            console.log("Received message: ", receivedMessage);
+            this.addSentMessage(sentMessage);
+            this.addReceivedMessage(receivedMessage);
+            this.deleteRecording();
+
+          },
+          err => {
+            console.log(err);
+          }
+        )
+
+      }
+      else {
+        this._chatService.sendVoiceAndReceiveText(this.contextId, this.audioBlob).subscribe(
+          res => {
+            const sentMessage: Message = {
+              content: res.transcription!,
+              type: MessageType.Sent,
+              urlAudioBlob: this.url
+            };
+  
+            const receivedMessage: Message = {
+              content: res.content,
+              type: MessageType.Received
+            };
+        
+            console.log("Sent message: ", sentMessage);
+            console.log("Received message: ", receivedMessage);
+            this.addSentMessage(sentMessage);
+            this.addReceivedMessage(receivedMessage);
+            this.deleteRecording();
+          },
+          err => {
+            console.log(err);
+          }
+        )
+      }
+    }
   }
 
   addSentMessage(message: Message) {
-    this.messages.push(message)
+    this.messages.push(message);
   }
 
   addReceivedMessage(message: Message) {
-    this.messages.push(message)
+    this.messages.push(message);
   }
 
   toggleRecording() {
@@ -191,51 +277,6 @@ export class ChatComponent implements AfterViewChecked {
     this.audioChunks = [];
   }
 
-  sendRecording() {
-    if (!this.contextId) {
-      // TODO add something
-      console.error("There is no contextId");
-      return;
-    }
-    if (this.audioBlob) {
-
-      /*this.blobToBase64(this.audioBlob).subscribe(
-        res => {
-
-        },
-        err => {
-          console.log(err);
-        }
-      )*/
-
-      
-      this._chatVoiceService.sendVoiceAndReceiveText(this.contextId, this.audioBlob).subscribe(
-        res => {
-          const sentMessage: Message = {
-            content: res.transcription!,
-            type: MessageType.Sent,
-            urlAudioBlob: this.url
-          };
-
-          const receivedMessage: Message = {
-            content: res.content,
-            type: MessageType.Received
-          };
-      
-          console.log("Sent message: ", sentMessage);
-          console.log("Received message: ", receivedMessage)
-          this.addSentMessage(sentMessage)
-          this.addReceivedMessage(receivedMessage);
-          this.deleteRecording();
-        },
-        err => {
-          console.log(err);
-          
-        }
-      )
-    }
-  }
-
   blobToBase64(blob: Blob): Observable<any> {
     const reader = new FileReader();
     reader.readAsDataURL(blob);
@@ -246,28 +287,25 @@ export class ChatComponent implements AfterViewChecked {
     }));
   };
 
-  startConversation() {
+  b64toBlob(b64Data: string, contentType: string) {
+	  const sliceSize = 512;
+	  const byteCharacters = atob(b64Data);
+	  const byteArrays = [];
 
-    const context: Context = {
-      content: "Hello"
-    }
+	  for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+		const slice = byteCharacters.slice(offset, offset + sliceSize);
 
-    this._chatService.startConversation(context).subscribe(
-      res => {
-        this.contextId = res.context_id;
-        
-        const receivedMessage: Message = {
-          content: res.content,
-          type: MessageType.Received
-        };
+		const byteNumbers = new Array(slice.length);
+	    for (let i = 0; i < slice.length; i++) {
+	      byteNumbers[i] = slice.charCodeAt(i);
+	    }
 
-        this.addReceivedMessage(receivedMessage);
-      },
-      err => {
-        console.log(err);
-        
-      }
-    )
+	    const byteArray = new Uint8Array(byteNumbers);
+	    byteArrays.push(byteArray);
+	  }
+
+	  const blob = new Blob(byteArrays, {type: contentType});
+	  return blob;
   }
 
 }
