@@ -29,7 +29,7 @@ export class ApiHttpService {
   public get<T>(route: string, params?: HttpParams): Observable<T> {
     return this.http.get<T>(
       this.createCompleteRoute(route, environment.backendDomain),
-      this.generateHeaders(params)
+      this.generateJsonHeaders(params)
     )
   }
   /**
@@ -47,40 +47,9 @@ export class ApiHttpService {
     return this.http.post<SuccessEntity<T>>(
       this.createCompleteRoute(route, environment.backendDomain),
       body,
-      this.generateHeaders(params)
+      this.generateJsonHeaders(params)
     )
   }
-
-  public postFile<T> (
-    route: string,
-    formData: FormData,
-    params?: HttpParams
-  ) {
-    return this.http.post<T>(
-      this.createCompleteRoute(route, environment.backendDomain),
-      formData,
-      {params}
-    )
-  }
-
-    /**
-   * Method to post data
-   *
-   * @param route
-   * @param body
-   * @param params - Additional HttpParams
-   */
-    public postWithoutSuccessEntity<T>(
-      route: string,
-      body: T,
-      params?: HttpParams
-    ): Observable<T> {
-      return this.http.post<T>(
-        this.createCompleteRoute(route, environment.backendDomain),
-        body,
-        this.generateHeaders(params)
-      )
-    }
 
   /**
    * Method to update data
@@ -97,10 +66,10 @@ export class ApiHttpService {
     return this.http.put<SuccessEntity<T>>(
       this.createCompleteRoute(route, environment.backendDomain),
       body,
-      this.generateHeaders(params)
+      this.generateJsonHeaders(params)
     )
   }
-
+  
   /**
    * Method to delete data
    *
@@ -113,7 +82,7 @@ export class ApiHttpService {
   ): Observable<SuccessEntity<T>> {
     return this.http.delete<SuccessEntity<T>>(
       this.createCompleteRoute(route, environment.backendDomain),
-      this.generateHeaders(params)
+      this.generateJsonHeaders(params)
     )
   }
 
@@ -130,59 +99,68 @@ export class ApiHttpService {
   /**
    * Method to generate headers
    */
-  private generateHeaders(params?: HttpParams) {
+  private generateJsonHeaders(params?: HttpParams) {
     return {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       params
     }
   }
 
-  /*private generateHeaders(params?: HttpParams) {
-    return {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', `Bearer ${this.getToken()}`),
-      params
-    }
-  }*/
+  /***************************************************************************** */
+
+  public postJsonAndReceiveJson<T>(
+    route: string,
+    body: T,
+    params?: HttpParams
+  ): Observable<T> {
+    const headers = new HttpHeaders().set('Accept', 'application/json');
+    return this.http.post<T>(
+      this.createCompleteRoute(route, environment.backendDomain),
+      body,
+      { headers, params }
+    )
+  }
+
+  public postJsonAndReceiveFile<I>(
+    route: string,
+    body: I,
+    params?: HttpParams
+  ): Observable<Blob> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post(
+      this.createCompleteRoute(route, environment.backendDomain),
+      body,
+      { headers, params, responseType: 'blob'}
+    )
+  }
+
+  public postFileAndReceiveJson<T> (
+    route: string,
+    formData: FormData,
+    params?: HttpParams
+  ): Observable<T> {
+    const headers = new HttpHeaders().set('Accept', 'application/json');
+    return this.http.post<T>(
+      this.createCompleteRoute(route, environment.backendDomain),
+      formData,
+      { headers, params }
+    )
+  }
+
+  public postFileAndReceiveFile(
+    route: string,
+    body: FormData,
+    params?: HttpParams
+  ): Observable<Blob> {
+    return this.http.post(
+      this.createCompleteRoute(route, environment.backendDomain),
+      body,
+      { params, responseType: 'blob'}
+    )
+  }
 
   private getToken() {
     return sessionStorage.getItem('access_token')
   }
 
-  /**
-   * Method to replace param to value
-   *
-   * @param urlApi
-   * @param param param to change in url
-   * @param value variable to change
-   * @returns url with idPolicy
-   */
-  public replaceUrl(urlApi: string, param: string, value: any): string {
-    return urlApi.replace(param, value.toString())
-  }
-
-  /**
-   * Method to emit error message according to HttpStatus
-   *
-   * @param error
-   */
-  public throwErrorApi(error: HttpErrorResponse) {
-    let errorApi = []
-    if (error.status === 500) {
-      errorApi.push(error.error)
-    } else if (error.status === 0) {
-      errorApi.push(error)
-    } else {
-      errorApi = error.error.errors
-    }
-    return errorApi
-  }
-
-  /**
-   * Method to extract error entity from HttpErrorResponse
-   */
-  public getErrorEntity(error: HttpErrorResponse): ErrorEntity {
-    return error.error
-  }
 }

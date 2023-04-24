@@ -173,3 +173,8 @@
 .red {
     color: rgba(255, 0, 0, 0.788);
 }
+
+.form-check-input:checked {
+    background-color: $primary;
+    border-color: $primary;
+}
