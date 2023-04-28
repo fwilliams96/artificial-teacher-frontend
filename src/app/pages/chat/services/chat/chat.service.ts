@@ -38,7 +38,7 @@ export class ChatService {
 
   sendVoiceAndReceiveText(contextId: string, audioBlob: Blob): Observable<Message> {
     const formData: FormData = new FormData();
-    formData.append("audio", audioBlob, "audio.wav");
+    formData.append("audio", audioBlob, "audio.mp3");
     formData.append("context_id", contextId);
     return this.apiHttpService.postFormDataAndReceiveJson<Message>(
       `${this.endpointUrl}/${contextId}/voice-text`,
@@ -48,7 +48,7 @@ export class ChatService {
 
   sendVoiceAndReceiveVoice(contextId: string, audioBlob: Blob): Observable<Blob> {
     const formData: FormData = new FormData();
-    formData.append("audio", audioBlob, "audio.wav");
+    formData.append("audio", audioBlob, "audio.mp3");
     formData.append("context_id", contextId);
     return this.apiHttpService.postFormDataAndReceiveFile(
       `${this.endpointUrl}/${contextId}/voice-voice`,
