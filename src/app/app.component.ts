@@ -8,7 +8,7 @@ import { delay } from 'rxjs/operators';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'endless-chat';
+  title = 'artificial-teacher-frontend';
   loading: boolean = false;
 
   constructor(
