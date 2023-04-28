@@ -40,7 +40,7 @@ export class ChatService {
     const formData: FormData = new FormData();
     formData.append("audio", audioBlob, "audio.wav");
     formData.append("context_id", contextId);
-    return this.apiHttpService.postFileAndReceiveJson<Message>(
+    return this.apiHttpService.postFormDataAndReceiveJson<Message>(
       `${this.endpointUrl}/${contextId}/voice-text`,
       formData
     )
@@ -50,7 +50,7 @@ export class ChatService {
     const formData: FormData = new FormData();
     formData.append("audio", audioBlob, "audio.wav");
     formData.append("context_id", contextId);
-    return this.apiHttpService.postFileAndReceiveFile(
+    return this.apiHttpService.postFormDataAndReceiveFile(
       `${this.endpointUrl}/${contextId}/voice-voice`,
       formData
     )
