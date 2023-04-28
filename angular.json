@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "endless-chat": {
+    "artificial-teacher-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/endless-chat",
+            "outputPath": "dist/artificial-teacher-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -74,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "endless-chat:build:production"
+              "browserTarget": "artificial-teacher-frontend:build:production"
             },
             "development": {
-              "browserTarget": "endless-chat:build:development"
+              "browserTarget": "artificial-teacher-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -85,7 +85,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "endless-chat:build"
+            "browserTarget": "artificial-teacher-frontend:build"
           }
         },
         "test": {
