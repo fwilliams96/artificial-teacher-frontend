@@ -1,21 +1,14 @@
 <main class="main">
     <div class="page-header-jumbotron">
 
-        <div class="container">
-
-            <h1>Chat</h1>
-
-            <!--<p class="page-header-helper">
-                Escríbenos un mensaje con tu consulta y te responderemos lo antes posible.
-            </p>-->
-
-        </div>
-
     </div>
 
     <div class="page-content">
         <div class="container-small">
-            <div class="chat-container">
+
+            <h1 class="text-center">Chat</h1>
+
+            <div class="mt-5 chat-container">
                 <div class="chat-header">
                     <div class="chat-title">
                         <h3>Goku</h3>
@@ -44,7 +37,7 @@
                 </div>
                 <div class="chat-footer justify-content-center" *ngIf="!contextId">
                     <button 
-                        class="btn btn-primary"
+                        class="btn btn-outline-primary"
                         (click)="startConversation()">
                         Start conversation
                     </button>
@@ -59,7 +52,7 @@
                     </textarea>
                     <button 
                         class="icon-button"
-                        [class.red]="recording"
+                        [class.active-button]="recording"
                         (click)="toggleRecording()">
                         <fa-icon [icon]="faMicrophone"></fa-icon>
                     </button>
@@ -87,7 +80,7 @@
 <ng-template #messageReceived let-message="message">
     <div class="message-item received">
         <div class="message-content">
-            <p *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
+            <p class="text-white" *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
             <audio *ngIf="message.urlAudioBlob" controls>
                 <source [src]="sanitize(message.urlAudioBlob)" type="audio/wav" />
             </audio>
@@ -99,7 +92,7 @@
 <ng-template #messageSent let-message="message">
     <div class="message-item sent">
         <div class="message-content">
-            <p *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
+            <p class="text-white" *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
             <audio *ngIf="message.urlAudioBlob" controls>
                 <source [src]="sanitize(message.urlAudioBlob)" type="audio/wav" />
             </audio>

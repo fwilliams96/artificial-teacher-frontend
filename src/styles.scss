@@ -5,10 +5,36 @@
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";
 
-$primary: #7746e6;
-$secondary: #f4ecff;
+//$primary: #7746e6;
+//$secondary: #f4ecff;
 // $btn-font-family: "Source Sans Pro";
 $btn-font-weight: bold;
+
+/* Reemplazar el color primario */
+$primary: #006699;
+//$primary: #5A7989;
+//$primary: #5675B0;
+
+//$secondary: #fd889b;
+//$secondary: #C93B3B;
+$secondary: #FF9900;
+
+/* Reemplazar el color de fondo del body */
+//$body-bg: #faeded;
+$body-bg: #F8F8F8;
+
+/* Reemplazar el color de la tipografía del body */
+$body-color: #333333;
+
+/* Personalizar el color de los encabezados */
+$headings-color: $primary;
+
+/* Reemplazar el color de la navbar */
+$navbar-dark-color: rgba($white, .5);
+$navbar-dark-hover-color: rgba($white, .75);
+$navbar-dark-active-color: $white;
+$navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-active-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+$navbar-dark-color-scheme: light;
 
 $theme-colors: (
   "primary": $primary,
@@ -27,32 +53,23 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 @import "node_modules/bootstrap/scss/bootstrap";
 
-h1 {
-    color: $primary;
-}
-
 a {
     text-decoration: none;
-    color: #2b2f33;
-}
-
-.main {
-    // margin-top: 3.7rem;
 }
 
 .page-header-jumbotron,
 .page-header {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
     text-align: center;
 }
 
 .page-header-jumbotron {
-    background: $secondary;
+    //background: $secondary;
 }
 
 .page-content {
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-bottom: 5rem;
 }
 
@@ -68,7 +85,6 @@ a {
     margin: 0 auto;
 }
 
-.form-control:focus {
-    border-color: $primary;
-    box-shadow: 0 0 0 0.2rem #7646e659;
+small {
+    color: #C93B3B;
 }

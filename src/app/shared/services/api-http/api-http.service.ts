@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core'
 import {
   HttpClient,
   HttpHeaders,
-  HttpParams,
-  HttpErrorResponse
+  HttpParams
 } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { environment } from 'src/environments/environment'
-import { ErrorEntity } from 'src/app/shared/interfaces/error-entity'
 import { SuccessEntity } from 'src/app/shared/interfaces/success-entity'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiHttpService {
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient
+    ) {}
 
   public getConfig<T>(route: string): Observable<T> {
     return this.http.get<T>(route)
@@ -117,7 +117,7 @@ export class ApiHttpService {
     return this.http.post<T>(
       this.createCompleteRoute(route, environment.backendDomain),
       body,
-      { headers, params }
+      { headers: this.getHeaders(), params }
     )
   }
 
@@ -130,11 +130,11 @@ export class ApiHttpService {
     return this.http.post(
       this.createCompleteRoute(route, environment.backendDomain),
       body,
-      { headers, params, responseType: 'blob'}
+      { headers: this.getHeaders(), params, responseType: 'blob'}
     )
   }
 
-  public postFileAndReceiveJson<T> (
+  public postFormDataAndReceiveJson<T> (
     route: string,
     formData: FormData,
     params?: HttpParams
@@ -143,11 +143,11 @@ export class ApiHttpService {
     return this.http.post<T>(
       this.createCompleteRoute(route, environment.backendDomain),
       formData,
-      { headers, params }
+      { headers: this.getHeaders(), params }
     )
   }
 
-  public postFileAndReceiveFile(
+  public postFormDataAndReceiveFile(
     route: string,
     body: FormData,
     params?: HttpParams
@@ -155,12 +155,34 @@ export class ApiHttpService {
     return this.http.post(
       this.createCompleteRoute(route, environment.backendDomain),
       body,
-      { params, responseType: 'blob'}
+      { headers: this.getHeaders(), params, responseType: 'blob'}
     )
   }
 
-  private getToken() {
-    return sessionStorage.getItem('access_token')
+  public getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    if (token) {
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    return new HttpHeaders();
   }
 
+  isLogged() {
+    return localStorage.getItem('access_token') != null;
+  }
+
+  getToken(): string | null {
+    if (this.isLogged()) {
+      return localStorage.getItem('access_token');
+    }
+    return null;
+  }
+
+  saveToken(token: string) {
+    localStorage.setItem('access_token', token);
+  }
+
+  removeToken() {
+    localStorage.removeItem('access_token');
+  }
 }

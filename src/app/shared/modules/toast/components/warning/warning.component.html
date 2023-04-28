@@ -1,0 +1,7 @@
+<div *ngIf="show" class="alert" @fadeSlideInOut (@fadeSlideInOut.done)="onDone($event)">
+    <fa-icon class="exclamation-circle-icon" [icon]="faExclamationCircle"></fa-icon>
+    <span class="msg">{{message}}</span>
+    <span class="close-btn" (click)="closeToast()">
+        <fa-icon class="times-icon" [icon]="faTimes"></fa-icon>
+    </span>
+</div>

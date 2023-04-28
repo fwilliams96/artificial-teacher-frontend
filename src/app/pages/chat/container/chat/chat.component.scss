@@ -6,8 +6,9 @@
     flex-direction: column;
     //height: 100%;
     height: 60vh;
-    border: 1px solid rgba(0, 0, 0, 0.247);
+    //border: 1px solid rgba(0, 0, 0, 0.247);
     border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     //overflow: scroll;
 }
 
@@ -68,7 +69,9 @@
 
 /* Estilos para los mensajes recibidos */
 .message-item.received .message-content {
-    background-color: #f5f5f5;
+    //background-color: #f5f5f5;
+    //background-color: #FF9900;
+    background-color: #474B4E;
     border-radius: 1rem 1rem 0 1rem;
     padding: 0.5rem 1rem;
     margin-right: auto;
@@ -77,7 +80,8 @@
 /* Estilos para los mensajes enviados */
 .message-item.sent .message-content {
     // background-color: #dcf8c6;
-    background-color: $secondary;
+    //background-color: $secondary;
+    background-color: #215C54;
     border-radius: 1rem 1rem 1rem 0;
     padding: 0.5rem 1rem;
     margin-left: auto;
@@ -114,67 +118,20 @@
     margin-right: 0.5rem;
 
 }
-/*.chat-footer textarea {
-    flex: 1;
-    border: none;
-    resize: none;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border-radius: 1rem;
-    margin-right: 0.5rem;
-}*/
 
-/* Estilos para el botón de envío */
-/*.chat-footer button {
-    background-color: #128c7e;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-}*/
-
-/* Estilos para el botón de búsqueda */
-.chat-header button:first-child {
-    margin-left: 0;
-}
-
-/* Estilos para el botón de adjuntar archivo */
-.chat-header button:nth-child(2) {
-    position: relative;
-}
-
-.chat-header button:nth-child(2) i:before {
-    content: "\f0c6";
-}
-
-.chat-header button:nth-child(2)::after {
-    content: "";
-    position: absolute;
-    top: -10px;
-    right: -5px;
-    width: 15px;
-    height: 15px;
-    background-color: red;
-    border-radius: 50%;
-    display: none;
-}
-
-.chat-header button:nth-child(2):hover::after {
-    display: block;
-}
-
-/* Estilos para el botón de opciones */
-.chat-header button:last-child i:before {
-    content: "\f141";
-}
-
-.red {
-    color: rgba(255, 0, 0, 0.788);
+.active-button {
+    color: #C93B3B;
 }
 
 .form-check-input:checked {
     background-color: $primary;
     border-color: $primary;
+}
+
+.sent-audio {
+    background-color: $secondary;
+}
+
+.received-audio {
+    background-color: #f5f5f5;
 }

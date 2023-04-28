@@ -1,8 +1,12 @@
 <app-spinner *ngIf="loading"></app-spinner>
 <div class="global-container">
     <div>
-        <!-- <app-header></app-header> -->
+        <app-header></app-header>
         <router-outlet></router-outlet>
     </div>
     <!-- <app-footer></app-footer> -->
 </div>
+<app-warning></app-warning>
+<app-success></app-success>
+<app-info></app-info>
+<app-danger></app-danger>

@@ -12,6 +12,7 @@ import { Observable, from } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChatService } from '../../services/chat/chat.service';
 import { Context } from '../../interfaces/context';
+import { DangerToastService } from 'src/app/shared/modules/toast/services/danger-toast/danger-toast.service';
 
 @Component({
   selector: 'app-chat',
@@ -50,7 +51,8 @@ export class ChatComponent implements AfterViewChecked {
 
   constructor(
     private readonly _chatService: ChatService,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private readonly _dangerToastService: DangerToastService
   ) {}
 
   ngAfterViewChecked() {
@@ -83,8 +85,8 @@ export class ChatComponent implements AfterViewChecked {
         this.addReceivedMessage(receivedMessage);
       },
       err => {
+        this._dangerToastService.show('Ha habido un error al empezar la conversación');
         console.log(err);
-        
       }
     )
   }
@@ -94,6 +96,7 @@ export class ChatComponent implements AfterViewChecked {
 
     if (!this.contextId) {
       // TODO add something
+      this._dangerToastService.show('Ha habido un error al obtener el contexto de la conversación');
       console.error("There is no contextId");
       return;
     }
@@ -123,6 +126,7 @@ export class ChatComponent implements AfterViewChecked {
           this.message = '';
         },
         err => {
+          this._dangerToastService.show('Ha habido un error al enviar el mensaje');
           console.log(err);
         }
       )
@@ -137,6 +141,7 @@ export class ChatComponent implements AfterViewChecked {
           this.message = '';
         },
         err => {
+          this._dangerToastService.show('Ha habido un error al enviar el mensaje');
           console.log(err)
         }
       );
@@ -146,7 +151,7 @@ export class ChatComponent implements AfterViewChecked {
 
   sendRecording() {
     if (!this.contextId) {
-      // TODO add something
+      this._dangerToastService.show('Ha habido un error al obtener el contexto de la conversación');
       console.error("There is no contextId");
       return;
     }
@@ -179,6 +184,7 @@ export class ChatComponent implements AfterViewChecked {
 
           },
           err => {
+            this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
             console.log(err);
           }
         )
@@ -205,6 +211,7 @@ export class ChatComponent implements AfterViewChecked {
             this.deleteRecording();
           },
           err => {
+            this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
             console.log(err);
           }
         )
@@ -245,8 +252,6 @@ export class ChatComponent implements AfterViewChecked {
         this.mediaRecorder.addEventListener("stop", async () => {
           this.audioBlob = new Blob(this.audioChunks, { type: "audio/wav" });
           this.url = URL.createObjectURL(this.audioBlob)
-          console.log(this.audioBlob);
-          console.log(this.url);
         });
 
         this.mediaRecorder.start();
@@ -277,7 +282,7 @@ export class ChatComponent implements AfterViewChecked {
     this.audioChunks = [];
   }
 
-  blobToBase64(blob: Blob): Observable<any> {
+  /*blobToBase64(blob: Blob): Observable<any> {
     const reader = new FileReader();
     reader.readAsDataURL(blob);
     return from(new Promise(resolve => {
@@ -306,6 +311,6 @@ export class ChatComponent implements AfterViewChecked {
 
 	  const blob = new Blob(byteArrays, {type: contentType});
 	  return blob;
-  }
+  }*/
 
 }
