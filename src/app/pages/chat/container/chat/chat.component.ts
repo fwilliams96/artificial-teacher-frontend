@@ -242,7 +242,7 @@ export class ChatComponent implements AfterViewChecked {
 
     this.getMedia({audio: true}).subscribe(
       res => {
-        this.mediaRecorder = new MediaRecorder(res)
+        this.mediaRecorder = new MediaRecorder(res);
 
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
           console.log(event);
@@ -250,7 +250,7 @@ export class ChatComponent implements AfterViewChecked {
         });
 
         this.mediaRecorder.addEventListener("stop", async () => {
-          this.audioBlob = new Blob(this.audioChunks, { type: "audio/wav" });
+          this.audioBlob = new Blob(this.audioChunks, { type: "audio/mp3" });
           this.url = URL.createObjectURL(this.audioBlob)
         });
 

@@ -82,7 +82,7 @@
         <div class="message-content">
             <p class="text-white" *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
             <audio *ngIf="message.urlAudioBlob" controls>
-                <source [src]="sanitize(message.urlAudioBlob)" type="audio/wav" />
+                <source [src]="sanitize(message.urlAudioBlob)" type="audio/mp3" />
             </audio>
             <span class="message-time">{{ message.date }}</span>
         </div>
@@ -94,7 +94,7 @@
         <div class="message-content">
             <p class="text-white" *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
             <audio *ngIf="message.urlAudioBlob" controls>
-                <source [src]="sanitize(message.urlAudioBlob)" type="audio/wav" />
+                <source [src]="sanitize(message.urlAudioBlob)" type="audio/mp3" />
             </audio>
             <span class="message-time">{{ message.date }}</span>
         </div>
