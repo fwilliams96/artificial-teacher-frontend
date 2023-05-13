@@ -1,4 +1,4 @@
-export interface Context {
+export interface ServerContext {
     content: string
     context_id?: string | undefined
 }

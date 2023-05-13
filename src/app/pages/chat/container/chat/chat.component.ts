@@ -7,12 +7,17 @@ import {
   faPaperPlane,
   faTrash
 } from '@fortawesome/free-solid-svg-icons'
-import { Message, MessageType } from '../../interfaces/message';
+import { Message, MessageOrigin } from '../../interfaces/message';
 import { Observable, from } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChatService } from '../../services/chat/chat.service';
-import { Context } from '../../interfaces/context';
+import { ServerContext } from '../../interfaces/server-context';
 import { DangerToastService } from 'src/app/shared/modules/toast/services/danger-toast/danger-toast.service';
+import { UserMessage } from '../../interfaces/user-message';
+import { Activity } from '../../interfaces/activity';
+import { MessageType } from '../../interfaces/message-type';
+import { ServerMessage } from '../../interfaces/server-message';
+import { ContentType } from '../../interfaces/content-type';
 
 @Component({
   selector: 'app-chat',
@@ -69,20 +74,15 @@ export class ChatComponent implements AfterViewChecked {
 
   startConversation() {
 
-    const context: Context = {
-      content: "Hello"
+    const userMessage: UserMessage = {
+      content: "Hello",
+      content_type: ContentType.TEXT
     }
 
-    this._chatService.startConversation(context).subscribe(
-      res => {
-        this.contextId = res.context_id;
-        
-        const receivedMessage: Message = {
-          content: res.content,
-          type: MessageType.Received
-        };
-
-        this.addReceivedMessage(receivedMessage);
+    this._chatService.startConversation(userMessage).subscribe(
+      serverContext => {
+        this.contextId = serverContext.context_id;
+        this.addServerContextMessage(serverContext);
       },
       err => {
         this._dangerToastService.show('Ha habido un error al empezar la conversación');
@@ -101,28 +101,20 @@ export class ChatComponent implements AfterViewChecked {
       return;
     }
 
-    const sentMessage: Message = {
+    const userMessage: UserMessage = {
       content: this.message,
-      type: MessageType.Sent
-    };
+      content_type: ContentType.TEXT
+    }
 
-    console.log("Sent message: ", sentMessage);
+    console.log("Sent message: ", userMessage);
 
     if (this.voiceEnabled) {
-      this._chatService.sendTextAndReceiveVoice(this.contextId, sentMessage).subscribe(
-        res => {
-          console.log("Received audio: ", res);
+      this._chatService.sendMessage(this.contextId, userMessage, ContentType.AUDIO).subscribe(
+        serverMessages => {
+          console.log("Received message: ", serverMessages);
 
-          const receivedMessage: Message = {
-            content: "",
-            type: MessageType.Received,
-            urlAudioBlob: URL.createObjectURL(res)
-          };
-
-          console.log("Received message: ", res);
-
-          this.addSentMessage(sentMessage);
-          this.addReceivedMessage(receivedMessage);
+          this.addUserMessage(userMessage);
+          serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
           this.message = '';
         },
         err => {
@@ -132,12 +124,13 @@ export class ChatComponent implements AfterViewChecked {
       )
     }
     else {
-      this._chatService.sendTextAndReceiveText(this.contextId, sentMessage).subscribe(
-        res => {
-          console.log("Received message: ", res);
-          res.type = MessageType.Received;
-          this.addSentMessage(sentMessage);
-          this.addReceivedMessage(res);
+      this._chatService.sendMessage(this.contextId, userMessage).subscribe(
+        serverMessages => {
+          console.log("Received messages: ", serverMessages);
+  
+          this.addUserMessage(userMessage);
+          serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
+  
           this.message = '';
         },
         err => {
@@ -149,6 +142,14 @@ export class ChatComponent implements AfterViewChecked {
 
   }
 
+  instanceOfActivity(content: any): content is Activity {
+      return 'name' in content;
+  }
+
+  getURLFromBlob(blob: Blob): string {
+    return URL.createObjectURL(blob)
+  }
+
   sendRecording() {
     if (!this.contextId) {
       this._dangerToastService.show('Ha habido un error al obtener el contexto de la conversación');
@@ -157,74 +158,116 @@ export class ChatComponent implements AfterViewChecked {
     }
 
     if (this.audioBlob) {
-
-      if (this.voiceEnabled) {
-        this._chatService.sendVoiceAndReceiveVoice(this.contextId, this.audioBlob).subscribe(
-          res => {
-
-            console.log("Received audio: ", res);
-
-            const sentMessage: Message = {
-              content: "",
-              type: MessageType.Sent,
-              urlAudioBlob: this.url
-            };
-  
-            const receivedMessage: Message = {
-              content: "",
-              type: MessageType.Received,
-              urlAudioBlob: URL.createObjectURL(res)
-            };
-
-            console.log("Sent message: ", sentMessage);
-            console.log("Received message: ", receivedMessage);
-            this.addSentMessage(sentMessage);
-            this.addReceivedMessage(receivedMessage);
-            this.deleteRecording();
-
-          },
-          err => {
-            this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
-            console.log(err);
-          }
-        )
-
-      }
-      else {
-        this._chatService.sendVoiceAndReceiveText(this.contextId, this.audioBlob).subscribe(
-          res => {
-            const sentMessage: Message = {
-              content: res.transcription!,
-              type: MessageType.Sent,
-              urlAudioBlob: this.url
-            };
-  
-            const receivedMessage: Message = {
-              content: res.content,
-              type: MessageType.Received
-            };
+      this.blobToBase64(this.audioBlob).then(base64Audio => {
         
-            console.log("Sent message: ", sentMessage);
-            console.log("Received message: ", receivedMessage);
-            this.addSentMessage(sentMessage);
-            this.addReceivedMessage(receivedMessage);
-            this.deleteRecording();
-          },
-          err => {
-            this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
-            console.log(err);
-          }
-        )
-      }
+        const userMessage: UserMessage = {
+          content: base64Audio,
+          content_type: ContentType.AUDIO
+        };
+
+        console.log("Sent message: ", userMessage);
+
+        if (this.voiceEnabled) {
+          this._chatService.sendMessage(this.contextId!, userMessage, ContentType.AUDIO).subscribe(
+            serverMessages => {
+              console.log("Received messages: ", serverMessages);
+      
+              this.addUserMessage(userMessage);
+              serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
+      
+              this.message = '';
+              this.deleteRecording();
+            },
+            err => {
+              this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
+              console.log(err);
+            }
+          )
+        }
+        else {
+          this._chatService.sendMessage(this.contextId!, userMessage).subscribe(
+            serverMessages => {
+              console.log("Received messages: ", serverMessages);
+      
+              this.addUserMessage(userMessage);
+              serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
+      
+              this.message = '';
+              this.deleteRecording();
+            },
+            err => {
+              this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
+              console.log(err);
+            }
+          )
+        }
+      })
+      .catch((err) => console.log(err));
     }
   }
 
-  addSentMessage(message: Message) {
-    this.messages.push(message);
+  addUserMessage(userMessage: UserMessage) {
+    if (userMessage.content_type == ContentType.AUDIO) {
+      this.messages.push({
+        type: MessageOrigin.User,
+        content_type: userMessage.content_type,
+        content: this.b64toBlob(userMessage.content as string, `${userMessage.content_type}/mp3`),
+        message_type: MessageType.CONVERSATION
+      })
+    }
+    else {
+      this.messages.push({
+        type: MessageOrigin.User,
+        content_type: userMessage.content_type,
+        content: userMessage.content,
+        message_type: MessageType.CONVERSATION
+      });
+    }
   }
 
-  addReceivedMessage(message: Message) {
-    this.messages.push(message);
+  addServerContextMessage(serverContextMessage: ServerContext) {
+    this.messages.push({
+      type: MessageOrigin.Server,
+      content_type: ContentType.TEXT,
+      content: serverContextMessage.content,
+      message_type: MessageType.CONVERSATION,
+    });
+  }
+
+  addServerMessage(serverMessage: ServerMessage) {
+    if (serverMessage.content_type == ContentType.AUDIO) {
+      this.messages.push({
+        type: MessageOrigin.Server,
+        content_type: serverMessage.content_type,
+        content: this.b64toBlob(serverMessage.content as string, `${serverMessage.content_type}/mp3`),
+        message_type: serverMessage.message_type
+      })
+    }
+    else {
+      this.messages.push({
+        type: MessageOrigin.Server,
+        content_type: serverMessage.content_type,
+        content: serverMessage.content,
+        message_type: serverMessage.message_type
+      });
+    }
+    console.log("Received server messages", this.messages);
+    
+  }
+
+  isTextConversation(message: Message) {
+    return message.content_type == ContentType.TEXT &&
+    message.message_type == MessageType.CONVERSATION
+  }
+  
+  isAudioConversation(message: Message) {
+    return message.content_type == ContentType.AUDIO &&
+    message.message_type == MessageType.CONVERSATION
+  }
+
+  isTextActivity(message: Message) {
+    return message.content_type == ContentType.TEXT &&
+    message.message_type == MessageType.ACTIVITY
   }
 
   toggleRecording() {
@@ -282,16 +325,6 @@ export class ChatComponent implements AfterViewChecked {
     this.audioChunks = [];
   }
 
-  /*blobToBase64(blob: Blob): Observable<any> {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    return from(new Promise(resolve => {
-      reader.onloadend = () => {
-        resolve(reader.result);
-      };
-    }));
-  };
-
   b64toBlob(b64Data: string, contentType: string) {
 	  const sliceSize = 512;
 	  const byteCharacters = atob(b64Data);
@@ -311,6 +344,39 @@ export class ChatComponent implements AfterViewChecked {
 
 	  const blob = new Blob(byteArrays, {type: contentType});
 	  return blob;
-  }*/
+  }
+
+  /*blobToBase64(blob: Blob): Observable<any> {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    return from(new Promise(resolve => {
+      reader.onloadend = () => {
+        resolve(reader.result);
+      };
+    }));
+  };*/
+
+  blobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = this.arrayBufferToBase64(reader.result as ArrayBuffer);
+        resolve(base64data);
+      };
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(blob);
+    });
+  }
+
+  arrayBufferToBase64(buffer: ArrayBuffer): string {
+    console.log(buffer)
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
 
 }

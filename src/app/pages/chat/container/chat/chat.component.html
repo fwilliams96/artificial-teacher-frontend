@@ -22,13 +22,13 @@
                 <div class="chat-body" #chatBody>
                     <div class="message-list">
                         <ng-container *ngFor="let message of messages" [ngSwitch]="message.type">
-                            <ng-container *ngSwitchCase="'Received'">
-                                <ng-container [ngTemplateOutlet]="messageReceived"
+                            <ng-container *ngSwitchCase="'User'">
+                                <ng-container [ngTemplateOutlet]="messageUser"
                                     [ngTemplateOutletContext]="{message}"
                                 ></ng-container>
                             </ng-container>
-                            <ng-container *ngSwitchCase="'Sent'">
-                                <ng-container [ngTemplateOutlet]="messageSent"
+                            <ng-container *ngSwitchCase="'Server'">
+                                <ng-container [ngTemplateOutlet]="messageServer"
                                     [ngTemplateOutletContext]="{message}"
                                 ></ng-container>
                             </ng-container>
@@ -77,25 +77,43 @@
     </div>
 </main>
 
-<ng-template #messageReceived let-message="message">
-    <div class="message-item received">
+<ng-template #messageUser let-message="message">
+    <div class="message-item sent">
         <div class="message-content">
-            <p class="text-white" *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
-            <audio *ngIf="message.urlAudioBlob" controls>
-                <source [src]="sanitize(message.urlAudioBlob)" type="audio/mp3" />
-            </audio>
+            <ng-container *ngIf="isTextConversation(message)">
+                <p class="text-white">{{ message.content }}</p>
+            </ng-container>
+            <ng-container *ngIf="isAudioConversation(message)">
+                <audio controls>
+                    <source [src]="sanitize(getURLFromBlob(message.content))" type="audio/mp3" />
+                </audio>
+            </ng-container>
             <span class="message-time">{{ message.date }}</span>
         </div>
     </div>
 </ng-template>
 
-<ng-template #messageSent let-message="message">
-    <div class="message-item sent">
+<ng-template #messageServer let-message="message">
+    <div class="message-item received">
         <div class="message-content">
-            <p class="text-white" *ngIf="!message.urlAudioBlob">{{ message.content }}</p>
-            <audio *ngIf="message.urlAudioBlob" controls>
-                <source [src]="sanitize(message.urlAudioBlob)" type="audio/mp3" />
-            </audio>
+            <ng-container *ngIf="isTextConversation(message)">
+                <p class="text-white">{{ message.content }}</p>
+            </ng-container>
+            <ng-container *ngIf="isAudioConversation(message)">
+                <audio controls>
+                    <source [src]="sanitize(getURLFromBlob(message.content))" type="audio/mp3" />
+                </audio>
+            </ng-container>
+            <ng-container *ngIf="isTextActivity(message)">
+                <p class="text-white">{{ message.content.flashcard.sentence }}</p>
+                <div *ngFor="let option of message.content.flashcard.options">
+                    <button
+                        type="button" 
+                        class="btn btn-primary">
+                        {{ option }}
+                    </button>
+                </div>
+            </ng-container>
             <span class="message-time">{{ message.date }}</span>
         </div>
     </div>

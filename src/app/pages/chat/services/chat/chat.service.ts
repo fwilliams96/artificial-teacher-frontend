@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Context } from '../../interfaces/context';
+import { ServerContext } from '../../interfaces/server-context';
 import { Observable } from 'rxjs';
 import { ApiHttpService } from 'src/app/shared/services/api-http/api-http.service';
-import { Message } from '../../interfaces/message';
+import { UserMessage } from '../../interfaces/user-message';
+import { ServerMessage } from '../../interfaces/server-message';
+import { ContentType } from '../../interfaces/content-type';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -15,44 +18,19 @@ export class ChatService {
     private readonly apiHttpService: ApiHttpService
   ) { }
 
-  startConversation(context: Context): Observable<Context> {
-    return this.apiHttpService.postJsonAndReceiveJson<Context>(
+  startConversation(userMessage: UserMessage): Observable<ServerContext> {
+    return this.apiHttpService.postJsonAndReceiveJson<ServerContext>(
       this.endpointUrl,
-      context
+      userMessage
     )
   }
 
-  sendTextAndReceiveText(contextId: string, message: Message): Observable<Message> {
-    return this.apiHttpService.postJsonAndReceiveJson<Message>(
-      `${this.endpointUrl}/${contextId}/text-text`,
-      message
+  sendMessage(contextId: string, message: UserMessage, responseType: ContentType = ContentType.TEXT): Observable<ServerMessage[]> {
+    return this.apiHttpService.postJsonAndReceiveJson2<UserMessage, ServerMessage[]>(
+      `${this.endpointUrl}/${contextId}`,
+      message,
+      new HttpParams().append('response_type', responseType)
     )
   }
 
-  sendTextAndReceiveVoice(contextId: string, message: Message): Observable<Blob> {
-    return this.apiHttpService.postJsonAndReceiveFile<Message>(
-      `${this.endpointUrl}/${contextId}/text-voice`,
-      message
-    )
-  }
-
-  sendVoiceAndReceiveText(contextId: string, audioBlob: Blob): Observable<Message> {
-    const formData: FormData = new FormData();
-    formData.append("audio", audioBlob, "audio.mp3");
-    formData.append("context_id", contextId);
-    return this.apiHttpService.postFormDataAndReceiveJson<Message>(
-      `${this.endpointUrl}/${contextId}/voice-text`,
-      formData
-    )
-  }
-
-  sendVoiceAndReceiveVoice(contextId: string, audioBlob: Blob): Observable<Blob> {
-    const formData: FormData = new FormData();
-    formData.append("audio", audioBlob, "audio.mp3");
-    formData.append("context_id", contextId);
-    return this.apiHttpService.postFormDataAndReceiveFile(
-      `${this.endpointUrl}/${contextId}/voice-voice`,
-      formData
-    )
-  }
 }
