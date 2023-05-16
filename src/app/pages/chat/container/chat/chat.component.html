@@ -100,7 +100,7 @@
                 <p class="text-white">{{ message.content }}</p>
             </ng-container>
             <ng-container *ngIf="isAudioConversation(message)">
-                <audio controls playsinline>
+                <audio controls autoplay playsinline>
                     <source [src]="sanitize(getURLFromBlob(message.content))" type="audio/mp4" />
                 </audio>
             </ng-container>
