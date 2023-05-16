@@ -51,7 +51,7 @@ export class AuthService {
   }
   
   register(user: User): Observable<User> {
-    return this._apiHttpService.postJsonAndReceiveJson<User>(
+    return this._apiHttpService.postJsonAndReceiveJson<User, User>(
       `${this.usersEndpointUrl}`,
       user
     );

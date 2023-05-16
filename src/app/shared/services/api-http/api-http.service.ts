@@ -108,6 +108,19 @@ export class ApiHttpService {
 
   /***************************************************************************** */
 
+  public postFormDataAndReceiveJson<T> (
+    route: string,
+    formData: FormData,
+    params?: HttpParams
+  ): Observable<T> {
+    const headers = new HttpHeaders().set('Accept', 'application/json');
+    return this.http.post<T>(
+      this.createCompleteRoute(route, environment.backendDomain),
+      formData,
+      { headers: this.getHeaders(), params }
+    )
+  }
+
   public postJsonAndReceiveJson<I,O>(
     route: string,
     body: I,
