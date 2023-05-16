@@ -106,12 +106,14 @@
             </ng-container>
             <ng-container *ngIf="isTextActivity(message)">
                 <p class="text-white">{{ message.content.flashcard.sentence }}</p>
-                <div *ngFor="let option of message.content.flashcard.options">
-                    <button
-                        type="button" 
-                        class="btn btn-primary">
-                        {{ option }}
-                    </button>
+                <div class="d-flex flash-card-options">
+                    <ng-container *ngFor="let option of message.content.flashcard.options">
+                        <button
+                            type="button" 
+                            class="btn btn-primary">
+                            {{ option }}
+                        </button>
+                    </ng-container>
                 </div>
             </ng-container>
             <span class="message-time">{{ message.date }}</span>
