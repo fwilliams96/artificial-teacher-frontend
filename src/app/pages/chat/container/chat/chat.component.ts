@@ -176,7 +176,8 @@ export class ChatComponent implements AfterViewChecked {
             },
             err => {
               this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
-              console.log(err);
+              console.log(`Error sending audio: ${err}`);
+              console.log(`Error sending audio json: ${JSON.stringify(err)}`);
             }
           )
         }
@@ -198,7 +199,10 @@ export class ChatComponent implements AfterViewChecked {
           )
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(`blobToBase64 error: ${JSON.stringify(err)}`)
+        console.log(err);
+      });
     }
   }
 
@@ -284,15 +288,16 @@ export class ChatComponent implements AfterViewChecked {
         this.mediaRecorder = new MediaRecorder(res);
 
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
-          console.log(JSON.stringify(event));
+          console.log(`Chunk event: ${JSON.stringify(event)}`);
+          console.log(`Chunk event data: ${JSON.stringify(event)}`);
           this.audioChunks.push(event.data);
         });
 
         this.mediaRecorder.addEventListener("stop", async () => {
           this.audioBlob = new Blob(this.audioChunks, { type: "audio/mp3" });
-          console.log(JSON.stringify(this.audioBlob));
+          console.log(`Audio blob: ${JSON.stringify(this.audioBlob)}`);
           this.url = URL.createObjectURL(this.audioBlob)
-          console.log(JSON.stringify(this.url));
+          console.log(`URL blob: ${JSON.stringify(this.url)}`);
         });
 
         this.mediaRecorder.start();
@@ -367,7 +372,7 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   arrayBufferToBase64(buffer: ArrayBuffer): string {
-    console.log(buffer)
+    console.log(`Array buffer: ${buffer}`)
     let binary = '';
     const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;

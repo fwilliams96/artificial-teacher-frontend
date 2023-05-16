@@ -108,12 +108,14 @@ export class ApiHttpService {
 
   /***************************************************************************** */
 
-  public postJsonAndReceiveJson2<I,O>(
+  public postJsonAndReceiveJson<I,O>(
     route: string,
     body: I,
     params?: HttpParams
   ): Observable<O> {
-    const headers = new HttpHeaders().set('Accept', 'application/json');
+    console.log(`Body: ${body}`);
+    console.log(`Headers: ${this.getHeaders()}`);
+    
     return this.http.post<O>(
       this.createCompleteRoute(route, environment.backendDomain),
       body,
@@ -121,61 +123,11 @@ export class ApiHttpService {
     )
   }
 
-  public postJsonAndReceiveJson<T>(
-    route: string,
-    body: T,
-    params?: HttpParams
-  ): Observable<T> {
-    const headers = new HttpHeaders().set('Accept', 'application/json');
-    return this.http.post<T>(
-      this.createCompleteRoute(route, environment.backendDomain),
-      body,
-      { headers: this.getHeaders(), params }
-    )
-  }
-
-  public postJsonAndReceiveFile<I>(
-    route: string,
-    body: I,
-    params?: HttpParams
-  ): Observable<Blob> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post(
-      this.createCompleteRoute(route, environment.backendDomain),
-      body,
-      { headers: this.getHeaders(), params, responseType: 'blob'}
-    )
-  }
-
-  public postFormDataAndReceiveJson<T> (
-    route: string,
-    formData: FormData,
-    params?: HttpParams
-  ): Observable<T> {
-    const headers = new HttpHeaders().set('Accept', 'application/json');
-    return this.http.post<T>(
-      this.createCompleteRoute(route, environment.backendDomain),
-      formData,
-      { headers: this.getHeaders(), params }
-    )
-  }
-
-  public postFormDataAndReceiveFile(
-    route: string,
-    body: FormData,
-    params?: HttpParams
-  ): Observable<Blob> {
-    return this.http.post(
-      this.createCompleteRoute(route, environment.backendDomain),
-      body,
-      { headers: this.getHeaders(), params, responseType: 'blob'}
-    )
-  }
-
   public getHeaders(): HttpHeaders {
     const token = this.getToken();
     if (token) {
-      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`)
+      .set('Content-Type', 'application/json');
     }
     return new HttpHeaders();
   }

@@ -19,14 +19,14 @@ export class ChatService {
   ) { }
 
   startConversation(userMessage: UserMessage): Observable<ServerContext> {
-    return this.apiHttpService.postJsonAndReceiveJson<ServerContext>(
+    return this.apiHttpService.postJsonAndReceiveJson<UserMessage, ServerContext>(
       this.endpointUrl,
       userMessage
     )
   }
 
   sendMessage(contextId: string, message: UserMessage, responseType: ContentType = ContentType.TEXT): Observable<ServerMessage[]> {
-    return this.apiHttpService.postJsonAndReceiveJson2<UserMessage, ServerMessage[]>(
+    return this.apiHttpService.postJsonAndReceiveJson<UserMessage, ServerMessage[]>(
       `${this.endpointUrl}/${contextId}`,
       message,
       new HttpParams().append('response_type', responseType)
