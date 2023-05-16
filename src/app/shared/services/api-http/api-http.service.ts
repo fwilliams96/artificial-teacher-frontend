@@ -126,8 +126,8 @@ export class ApiHttpService {
     body: I,
     params?: HttpParams
   ): Observable<O> {
-    console.log(`Body: ${body}`);
-    console.log(`Headers: ${this.getHeaders()}`);
+    console.log(`Body: ${JSON.stringify(body)}`);
+    console.log(`Headers: ${JSON.stringify(this.getHeaders())}`);
     
     return this.http.post<O>(
       this.createCompleteRoute(route, environment.backendDomain),
