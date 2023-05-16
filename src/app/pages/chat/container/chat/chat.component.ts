@@ -286,9 +286,9 @@ export class ChatComponent implements AfterViewChecked {
 
     this.getMedia({audio: true}).subscribe(
       res => {
-        const mime = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/ogg']
-        .filter(MediaRecorder.isTypeSupported)[0];
-        console.log(`mime type supported: ${mime}`);
+        const mime = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/webm;codecs=vp8', 'audio/webm;codecs=opus', 'video/webm;codecs=vp9', 'audio/ogg', 'audio/mp4']
+        .filter(MediaRecorder.isTypeSupported);
+        console.log(`mime types supported: ${mime}`);
         if (MediaRecorder.isTypeSupported('audio/mp4')) {
           console.log('audio/mp4 supported');
           this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/mp4' });
