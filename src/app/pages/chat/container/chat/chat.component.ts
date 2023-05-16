@@ -161,7 +161,7 @@ export class ChatComponent implements AfterViewChecked {
           content_type: ContentType.AUDIO
         };
 
-        console.log("Sent message: ", userMessage);
+        console.log(`Sent message: ${JSON.stringify(userMessage)}`);
 
         if (this.voiceEnabled) {
           this._chatService.sendMessage(this.contextId!, userMessage, ContentType.AUDIO).subscribe(
@@ -193,8 +193,9 @@ export class ChatComponent implements AfterViewChecked {
               this.deleteRecording();
             },
             err => {
+              console.log(`Error sending audio: ${err}`);
+              console.log(`Error sending audio json: ${JSON.stringify(err)}`);
               this._dangerToastService.show('Ha habido un error al enviar el mensaje de voz');
-              console.log(err);
             }
           )
         }
@@ -372,7 +373,7 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   arrayBufferToBase64(buffer: ArrayBuffer): string {
-    console.log(`Array buffer: ${buffer}`)
+    console.log(`Array buffer: ${JSON.stringify(buffer)}`)
     let binary = '';
     const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;
