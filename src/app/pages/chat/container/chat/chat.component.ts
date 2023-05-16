@@ -295,7 +295,7 @@ export class ChatComponent implements AfterViewChecked {
         });
 
         this.mediaRecorder.addEventListener("stop", async () => {
-          this.audioBlob = new Blob(this.audioChunks, { type: "audio/mp3" });
+          this.audioBlob = new Blob(this.audioChunks, { type: "audio/wav" });
           console.log(`Audio blob: ${JSON.stringify(this.audioBlob)}`);
           this.url = URL.createObjectURL(this.audioBlob)
           console.log(`URL blob: ${JSON.stringify(this.url)}`);
