@@ -47,11 +47,6 @@ export class ChatComponent implements AfterViewChecked {
 
   voiceEnabled = false
 
-  constraints = {
-    audio: false,
-    video: true
-  };
-
   url : string | undefined = undefined
 
   constructor(
@@ -158,6 +153,7 @@ export class ChatComponent implements AfterViewChecked {
     }
 
     if (this.audioBlob) {
+      console.log("Sending audio..");
       this.blobToBase64(this.audioBlob).then(base64Audio => {
         
         const userMessage: UserMessage = {
@@ -288,13 +284,15 @@ export class ChatComponent implements AfterViewChecked {
         this.mediaRecorder = new MediaRecorder(res);
 
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
-          console.log(event);
+          console.log(JSON.stringify(event));
           this.audioChunks.push(event.data);
         });
 
         this.mediaRecorder.addEventListener("stop", async () => {
           this.audioBlob = new Blob(this.audioChunks, { type: "audio/mp3" });
+          console.log(JSON.stringify(this.audioBlob));
           this.url = URL.createObjectURL(this.audioBlob)
+          console.log(JSON.stringify(this.url));
         });
 
         this.mediaRecorder.start();
