@@ -212,7 +212,7 @@ export class ChatComponent implements AfterViewChecked {
       this.messages.push({
         type: MessageOrigin.User,
         content_type: userMessage.content_type,
-        content: this.b64toBlob(userMessage.content as string, `${userMessage.content_type}/wav`),
+        content: this.b64toBlob(userMessage.content as string, `${userMessage.content_type}/webmp`),
         message_type: MessageType.CONVERSATION
       })
     }
@@ -240,7 +240,7 @@ export class ChatComponent implements AfterViewChecked {
       this.messages.push({
         type: MessageOrigin.Server,
         content_type: serverMessage.content_type,
-        content: this.b64toBlob(serverMessage.content as string, `${serverMessage.content_type}/wav`),
+        content: this.b64toBlob(serverMessage.content as string, `${serverMessage.content_type}/webm`),
         message_type: serverMessage.message_type
       })
     }
@@ -286,7 +286,14 @@ export class ChatComponent implements AfterViewChecked {
 
     this.getMedia({audio: true}).subscribe(
       res => {
-        this.mediaRecorder = new MediaRecorder(res);
+        if (MediaRecorder.isTypeSupported('audio/webm')) {
+          console.log('audio/webm supported');
+          this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/webm' });
+        }
+        else {
+          console.log('audio/webm not supported, setting audio/wav');
+          this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/wav' });
+        }
 
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
           console.log(`Chunk event: ${JSON.stringify(event)}`);
@@ -295,7 +302,7 @@ export class ChatComponent implements AfterViewChecked {
         });
 
         this.mediaRecorder.addEventListener("stop", async () => {
-          this.audioBlob = new Blob(this.audioChunks, { type: "audio/wav" });
+          this.audioBlob = new Blob(this.audioChunks, { type: this.mediaRecorder?.mimeType });
           console.log(`Audio blob: ${JSON.stringify(this.audioBlob)}`);
           this.url = URL.createObjectURL(this.audioBlob)
           console.log(`URL blob: ${JSON.stringify(this.url)}`);
