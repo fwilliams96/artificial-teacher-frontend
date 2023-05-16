@@ -59,7 +59,7 @@
                 </div>
                 <div class="d-flex px-2 pb-2" *ngIf="url">
                     <audio controls class="w-100">
-                        <source [src]="sanitize(url)" type="audio/webm" />
+                        <source [src]="sanitize(url)" type="audio/mp4" />
                     </audio>
                     <button 
                         class="icon-button"
@@ -85,7 +85,7 @@
             </ng-container>
             <ng-container *ngIf="isAudioConversation(message)">
                 <audio controls>
-                    <source [src]="sanitize(getURLFromBlob(message.content))" type="audio/webm" />
+                    <source [src]="sanitize(getURLFromBlob(message.content))" type="audio/mp4" />
                 </audio>
             </ng-container>
             <span class="message-time">{{ message.date }}</span>
@@ -101,7 +101,7 @@
             </ng-container>
             <ng-container *ngIf="isAudioConversation(message)">
                 <audio controls playsinline>
-                    <source [src]="sanitize(getURLFromBlob(message.content))" type="audio/webm" />
+                    <source [src]="sanitize(getURLFromBlob(message.content))" type="audio/mp4" />
                 </audio>
             </ng-container>
             <ng-container *ngIf="isTextActivity(message)">

@@ -212,7 +212,7 @@ export class ChatComponent implements AfterViewChecked {
       this.messages.push({
         type: MessageOrigin.User,
         content_type: userMessage.content_type,
-        content: this.b64toBlob(userMessage.content as string, `${userMessage.content_type}/webmp`),
+        content: this.b64toBlob(userMessage.content as string, `${userMessage.content_type}/mp4`),
         message_type: MessageType.CONVERSATION
       })
     }
@@ -240,7 +240,7 @@ export class ChatComponent implements AfterViewChecked {
       this.messages.push({
         type: MessageOrigin.Server,
         content_type: serverMessage.content_type,
-        content: this.b64toBlob(serverMessage.content as string, `${serverMessage.content_type}/webm`),
+        content: this.b64toBlob(serverMessage.content as string, `${serverMessage.content_type}/mp4`),
         message_type: serverMessage.message_type
       })
     }
@@ -286,12 +286,19 @@ export class ChatComponent implements AfterViewChecked {
 
     this.getMedia({audio: true}).subscribe(
       res => {
-        if (MediaRecorder.isTypeSupported('audio/webm')) {
+        const mime = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/ogg']
+        .filter(MediaRecorder.isTypeSupported)[0];
+        console.log(`mime type supported: ${mime}`);
+        if (MediaRecorder.isTypeSupported('audio/mp4')) {
+          console.log('audio/mp4 supported');
+          this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/mp4' });
+        }
+        else if (MediaRecorder.isTypeSupported('audio/webm')) {
           console.log('audio/webm supported');
           this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/webm' });
         }
         else {
-          console.log('audio/webm not supported, setting audio/wav');
+          console.log('either audio/mp4 nor audio/webm are supported, setting audio/wav');
           this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/wav' });
         }
 
