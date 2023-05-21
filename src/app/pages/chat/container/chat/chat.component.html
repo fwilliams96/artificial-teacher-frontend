@@ -48,12 +48,15 @@
                         class="form-control"
                         [(ngModel)]="message"
                         (keydown.enter)="onKeyDown($event)"
-                        (keyup.enter)="sendText()">
+                        (keyup.enter)="sendText()"
+                        [disabled]="activityRunning"
+                        >
                     </textarea>
                     <button 
                         class="icon-button"
                         [class.active-button]="recording"
-                        (click)="toggleRecording()">
+                        (click)="toggleRecording()"
+                        [disabled]="activityRunning">
                         <fa-icon [icon]="faMicrophone"></fa-icon>
                     </button>
                 </div>
@@ -110,7 +113,9 @@
                     <ng-container *ngFor="let option of message.content.flashcard.options">
                         <button
                             type="button" 
-                            class="btn btn-primary">
+                            class="btn btn-primary"
+                            (click)="answerActivity(option)"
+                            [disabled]="!message.content.active">
                             {{ option }}
                         </button>
                     </ng-container>
