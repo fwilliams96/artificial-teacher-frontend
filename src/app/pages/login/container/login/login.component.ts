@@ -51,7 +51,7 @@ export class LoginComponent {
     this.authService.login(this.email.value, this.password.value).subscribe(
       (response) => {
         this._infoToastService.show(`¡Bienvenido ${this.email.value}!`)
-        this._router.navigate(['/chat']);
+        this._router.navigate(['/home']);
       },
       (error) => {
         this._dangerToastService.show('Las credenciales son incorrectas');

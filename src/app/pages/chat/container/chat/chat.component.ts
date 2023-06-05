@@ -8,7 +8,7 @@ import {
   faTrash
 } from '@fortawesome/free-solid-svg-icons'
 import { Message, MessageOrigin } from '../../interfaces/message';
-import { Observable, from } from 'rxjs';
+import { Observable, from, last } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChatService } from '../../services/chat/chat.service';
 import { ServerContext } from '../../interfaces/server-context';
@@ -49,6 +49,8 @@ export class ChatComponent implements AfterViewChecked {
 
   url : string | undefined = undefined
 
+  activityRunning = false
+
   constructor(
     private readonly _chatService: ChatService,
     private domSanitizer: DomSanitizer,
@@ -71,7 +73,8 @@ export class ChatComponent implements AfterViewChecked {
 
     const userMessage: UserMessage = {
       content: "Hello",
-      content_type: ContentType.TEXT
+      content_type: ContentType.TEXT,
+      message_type: MessageType.CONVERSATION
     }
 
     this._chatService.startConversation(userMessage).subscribe(
@@ -98,7 +101,8 @@ export class ChatComponent implements AfterViewChecked {
 
     const userMessage: UserMessage = {
       content: this.message,
-      content_type: ContentType.TEXT
+      content_type: ContentType.TEXT,
+      message_type: MessageType.CONVERSATION
     }
 
     console.log("Sent message: ", userMessage);
@@ -158,7 +162,8 @@ export class ChatComponent implements AfterViewChecked {
         
         const userMessage: UserMessage = {
           content: base64Audio,
-          content_type: ContentType.AUDIO
+          content_type: ContentType.AUDIO,
+          message_type: MessageType.CONVERSATION
         };
 
         console.log(`Sent message: ${JSON.stringify(userMessage)}`);
@@ -236,6 +241,9 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   addServerMessage(serverMessage: ServerMessage) {
+    if (serverMessage.message_type == MessageType.ACTIVITY) {
+      this.activityRunning = true;
+    }
     if (serverMessage.content_type == ContentType.AUDIO) {
       this.messages.push({
         type: MessageOrigin.Server,
@@ -395,6 +403,41 @@ export class ChatComponent implements AfterViewChecked {
       binary += String.fromCharCode(bytes[i]);
     }
     return window.btoa(binary);
+  }
+
+  answerActivity(option: string) {
+    if (!this.contextId) {
+      // TODO add something
+      this._dangerToastService.show('Ha habido un error al obtener el contexto de la conversación');
+      console.error("There is no contextId");
+      return;
+    }
+
+    const userMessage: UserMessage = {
+      content: option,
+      content_type: ContentType.TEXT,
+      message_type: MessageType.ACTIVITY
+    }
+
+    console.log("Sent message: ", userMessage);
+
+    this._chatService.sendMessage(this.contextId, userMessage).subscribe(
+      serverMessages => {
+        console.log("Received messages: ", serverMessages);
+        this.disableLastServerActivity();
+        serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
+        this.activityRunning = false;
+      },
+      err => {
+        this._dangerToastService.show('Ha habido un error al enviar el mensaje');
+        console.log(err)
+      }
+    );
+  }
+
+  disableLastServerActivity() {
+    const lastServerActivityMessage = this.messages[this.messages.length-1];
+    (lastServerActivityMessage.content as Activity).active = false;
   }
 
 }

@@ -1,0 +1,90 @@
+@import "src/styles";
+
+/* Estilos para el contenedor principal */
+.listening-container {
+    display: flex;
+    flex-direction: column;
+    //height: 100%;
+    //border: 1px solid rgba(0, 0, 0, 0.247);
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    //overflow: scroll;
+}
+
+/* Estilos para la cabecera del chat */
+.listening-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Estilos para el título del chat */
+.listening-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.listening-title h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.listening-title span {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* Estilos para los botones de la cabecera */
+.icon-button {
+    background: transparent;
+    border: none;
+    margin-left: 0.5rem;
+    cursor: pointer;
+}
+
+/* Estilos para el cuerpo del chat */
+.listening-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    //overflow-y: scroll;
+    overflow: auto;
+    align-items: center;
+    row-gap: 2rem;
+    //justify-content: space-evenly;
+}
+
+    
+/* Estilos para el pie del chat */
+.listening-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+}
+
+/* Estilos para el cuadro de texto de entrada */
+.listening-footer textarea {
+    margin-right: 0.5rem;
+}
+
+.active-button {
+    color: #C93B3B;
+}
+
+.form-check-input:checked {
+    background-color: $primary;
+    border-color: $primary;
+}
+
+.sentence {
+    display: flex;
+    justify-content: center;
+    column-gap: 4px;
+    flex-wrap: wrap;
+}

@@ -6,5 +6,5 @@ export const registerGuard = () => {
     const router = inject(Router);
     const service = inject(ApiHttpService)
 
-	return !service.isLogged() ? true: router.navigate(['/chat']);
+	return !service.isLogged() ? true: router.navigate(['/home']);
 }

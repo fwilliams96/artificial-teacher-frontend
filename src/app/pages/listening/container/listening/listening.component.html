@@ -1,0 +1,58 @@
+<main class="main">
+    <div class="page-header-jumbotron">
+
+    </div>
+
+    <div class="page-content">
+        <div class="container-small">
+
+            <h1 class="text-center">Listening</h1>
+
+            <div *ngIf="listening" class="mt-5 listening-container">
+                <div class="listening-header">
+                    <div class="listening-title">
+                        <h3>{{ listening.topic }}</h3>
+                    </div>
+                </div>
+                <div *ngIf="currentSentence" class="listening-body" #listeningBody>
+                    <audio #audioListening controls autoplay playsinline>
+                        <source [src]="currentSentence.safeUrl" type="audio/mp4" />
+                    </audio>
+
+                    
+                    <div class="sentence">
+                        <ng-container *ngFor="let word of currentSentence.words">
+                            <ng-container *ngIf="isWritable(word)">
+                                <div class="d-flex flex-column">
+                                    <input 
+                                        [ngClass]="currentSentence.answered ? word.wrong ? 'is-invalid' : 'is-valid': '' "
+                                        [(ngModel)]="word.userValue" 
+                                        [disabled]="currentSentence.answered" 
+                                        type="text" 
+                                        class="form-control" 
+                                        name="missing">
+                                    <div class="invalid-feedback">
+                                        {{ word.value }}
+                                    </div>
+                                </div>
+
+                            </ng-container>
+                            <ng-container *ngIf="!isWritable(word)">
+                                <span>{{ word.value }}</span>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+
+                    <button type="button" [disabled]="currentSentence.answered" class="btn btn-primary" (click)="checkCurrentSentence()">Comprobar</button>
+                </div>
+
+                <div class="listening-footer">
+                    <button type="button" [disabled]="isFirstPage()" class="btn btn-outline-primary" (click)="goToPreviousSentence()">Atrás</button>
+                    <span>{{ currentSentenceIndex+1}} de {{ listening.sentences.length }}</span>
+                    <button type="button" [disabled]="isLastPage()" class="btn btn-primary" (click)="goToNextSentence()">Siguiente</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</main>
