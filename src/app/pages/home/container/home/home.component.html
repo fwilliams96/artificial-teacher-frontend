@@ -1,3 +1,29 @@
 <main class="main">
-    
+    <div class="page-content">
+        <div class="container-small">
+
+            <h1 class="text-center mb-5">Empieza a practicar</h1>
+
+            <div class="d-grid chats">
+                <a [routerLink]="['/listening']">
+                    <div class="card border-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body text-primary">
+                            <h5 class="card-title">Listening</h5>
+                            <p class="card-text">Practica la escucha de audios con este método.</p>
+                            
+                        </div>
+                    </div>
+                </a>
+                <a [routerLink]="['/chat']">
+                    <div class="card bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body text-white">
+                            <h5 class="card-title text-white">Chat</h5>
+                            <p class="card-text">Habla de forma libre e ilimitada con nuestro agente robot.</p>
+                        </div>
+                    </div>
+                </a>
+                
+            </div>
+        </div>
+    </div>
 </main>
