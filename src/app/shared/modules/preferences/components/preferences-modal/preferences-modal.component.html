@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h4 class="modal-title">Añade al menos una preferencia para mejorar tu experiencia</h4>
+</div>
+<div class="modal-body">
+    <div class="form-check mb-4" *ngFor="let preference of preferences; let i=index">
+        <input class="form-check-input" type="checkbox" (click)="toggleReference(preference)" value="" [id]="i">
+        <label class="form-check-label" [for]="i">
+            {{ preference.preference }}
+        </label>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" [disabled]="noPreferenceChecked()" 
+    class="btn btn-primary" (click)="activeModal.close('save')">Guardar</button>
+</div>

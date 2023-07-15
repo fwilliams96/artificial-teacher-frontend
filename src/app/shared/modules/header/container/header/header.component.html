@@ -7,10 +7,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto navbar-right">
         <li class="nav-item" *ngIf="!(isLogged$ | async)">
-          <a class="nav-link active" [routerLink]="['/login']">Login</a>
+          <a class="nav-link active" [routerLink]="['/login']">Iniciar sesión</a>
         </li>
         <li class="nav-item" *ngIf="isLogged$ | async">
-          <a class="nav-link active" role="button" (click)="logout()">Logout</a>
+          <a class="nav-link active" role="button" (click)="goToMyCards()">Mis cartas</a>
+        </li>
+        <li class="nav-item" *ngIf="isLogged$ | async">
+          <a class="nav-link active" role="button" (click)="logout()">Cerrar sesión</a>
         </li>
       </ul>
     </div>
