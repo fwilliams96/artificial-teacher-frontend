@@ -14,6 +14,8 @@ import { Listening } from '../../interfaces/listening';
 import { Sentence } from '../../interfaces/sentence';
 import { SentenceWord } from '../../interfaces/sentence-word';
 import { WritableSentenceWord } from '../../interfaces/writable-sentence-word';
+import { InfoToastService } from 'src/app/shared/modules/toast/services/info-toast/info-toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-listening',
@@ -38,7 +40,9 @@ export class ListeningComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly _chatService: ListeningService,
     private domSanitizer: DomSanitizer,
-    private readonly _dangerToastService: DangerToastService
+    private readonly _infoToastService: InfoToastService,
+    private readonly _dangerToastService: DangerToastService,
+    private _router: Router
   ) {}
 
   ngAfterViewInit(): void {
@@ -87,7 +91,7 @@ export class ListeningComponent implements OnInit, AfterViewInit {
 
   initializeSentenceWords(words: SentenceWord[]): SentenceWord[] {
     return words.map(word => {
-      if (word.writable) {
+      if (word.askable) {
         return {
           ...word,
           userValue: ''
@@ -133,9 +137,9 @@ export class ListeningComponent implements OnInit, AfterViewInit {
       let anyWordWrong = false;
 
       this.currentSentence.words.forEach(word => {
-        if (word.writable) {
+        if (word.askable) {
           const writableWord = word as WritableSentenceWord;
-          if (writableWord.value !== writableWord.userValue) {
+          if (writableWord.word.toLowerCase() !== writableWord.userValue.toLowerCase()) {
             writableWord.wrong = true;
             anyWordWrong = true;
           }
@@ -196,6 +200,32 @@ export class ListeningComponent implements OnInit, AfterViewInit {
       return this.currentSentenceIndex == ((this.listening.sentences.length - 1));
     }
     return false;
+  }
+
+  allSentencesWereChecked() {
+    if (this.listening)
+    for(let sentence of this.listening.sentences) {
+      if (!sentence.answered) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  finishListening() {
+    if (!this.listening) {
+      return;
+    }
+    this.listening.finished = true;
+    this._chatService.finishListening(this.listening).subscribe(
+      res => {
+        this._router.navigate(['/home']);
+        this._infoToastService.show('¡Has finalizado el listening!');
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 
 }

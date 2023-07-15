@@ -17,12 +17,19 @@ export class ListeningService {
     private readonly apiHttpService: ApiHttpService
   ) { }
 
-  startListening(numSentences: number = 2): Observable<Listening> {
+  startListening(numSentences: number = 3): Observable<Listening> {
     //return of(this.getMockListening());
     return this.apiHttpService.postJsonAndReceiveJson<{}, Listening>(
       this.endpointUrl,
       {},
       new HttpParams().append('num_sentences', numSentences)
+    )
+  }
+
+  finishListening(listening: Listening): Observable<void> {
+    return this.apiHttpService.putJson<Listening, void>(
+      `${this.endpointUrl}/${listening.id}`,
+      listening
     )
   }
 
@@ -38,25 +45,34 @@ export class ListeningService {
               incomplete_sentence: "______ opens your mind",
               words: [
                 {
-                  value: "Travel",
-                  writable: true
+                  word: "Travel",
+                  isWord: true,
+                  askable: true,
+                  wrong: false
                 },
                 {
-                  value: "opens",
-                  writable: false
+                  word: "opens",
+                  isWord: true,
+                  askable: false,
+                  wrong: false
                 },
                 {
-                  value: "your",
-                  writable: false
+                  word: "your",
+                  isWord: true,
+                  askable: false,
+                  wrong: false
                 },
                 {
-                  value: "mind",
-                  writable: false
+                  word: "mind",
+                  isWord: true,
+                  askable: false,
+                  wrong: false
                 }
               ],
-              answered: false
+              answered: false,
           }
-      ]
+      ],
+      finished: false
     }
   }
 

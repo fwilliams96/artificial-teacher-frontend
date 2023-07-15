@@ -35,4 +35,8 @@ export class HeaderComponent {
     );
   }
 
+  goToMyCards() {
+    this._router.navigate(['/my-cards']);
+  }
+
 }
