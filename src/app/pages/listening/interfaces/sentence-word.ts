@@ -1,4 +1,6 @@
 export interface SentenceWord {
-    value: string,
-    writable: boolean
+    word: string,
+    isWord: boolean,
+    askable: boolean,
+    wrong: boolean | undefined
 }

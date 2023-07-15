@@ -1,0 +1,23 @@
+<main class="main">
+    <div class="page-content">
+        <div class="container-small">
+
+            <h1 class="text-center mb-5">Mis cartas</h1>
+
+            <div class="d-grid cards">
+                <div *ngFor="let sentence of sentences; let i = index" class="card border-primary mb-3"
+                [ngClass]="i%2 === 0 ? 'border-primary': 'bg-primary'" 
+                style="max-width: 18rem;">
+                    <div class="card-body" [ngClass]="i%2 === 0 ? 'text-primary': 'text-white'">
+                        <h5 class="card-title" [ngClass]="i%2 === 0 ? '': 'text-white'">{{ sentence.word }}</h5>
+                        <p class="card-text">{{ sentence.sentence }}</p>
+                        <audio controls>
+                            <source [src]="sanitize(getURLFromBlob(sentence.audio))" type="audio/mp4" />
+                        </audio>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</main>
