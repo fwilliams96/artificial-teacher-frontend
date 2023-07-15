@@ -32,13 +32,13 @@
                                         class="form-control" 
                                         name="missing">
                                     <div class="invalid-feedback">
-                                        {{ word.value }}
+                                        {{ word.word }}
                                     </div>
                                 </div>
 
                             </ng-container>
                             <ng-container *ngIf="!isWritable(word)">
-                                <span>{{ word.value }}</span>
+                                <span>{{ word.word }}</span>
                             </ng-container>
                         </ng-container>
                     </div>
@@ -47,9 +47,10 @@
                 </div>
 
                 <div class="listening-footer">
-                    <button type="button" [disabled]="isFirstPage()" class="btn btn-outline-primary" (click)="goToPreviousSentence()">Atrás</button>
+                    <button type="button" *ngIf="!isFirstPage()" class="btn btn-outline-primary" (click)="goToPreviousSentence()">Atrás</button>
                     <span>{{ currentSentenceIndex+1}} de {{ listening.sentences.length }}</span>
-                    <button type="button" [disabled]="isLastPage()" class="btn btn-primary" (click)="goToNextSentence()">Siguiente</button>
+                    <button type="button" *ngIf="!isLastPage()" class="btn btn-primary" (click)="goToNextSentence()">Siguiente</button>
+                    <button type="button" *ngIf="isLastPage() && allSentencesWereChecked()" class="btn btn-primary" (click)="finishListening()">Finalizar</button>
                 </div>
                 
             </div>

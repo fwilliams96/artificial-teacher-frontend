@@ -17,7 +17,6 @@ export class HttpAuthRequestInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
             if (err.status === 401) {
-                console.log("barbie");
                 
                 // auto logout if 401 response returned from api
                 this._authService.logout().subscribe(

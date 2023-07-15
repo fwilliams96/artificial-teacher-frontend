@@ -16,6 +16,8 @@ import { RegisterModule } from './pages/register/register.module';
 import { ToastModule } from "./shared/modules/toast/toast.module";
 import { ListeningModule } from './pages/listening/listening.module';
 import { ChatModule } from './pages/chat/chat.module';
+import { MyCardsModule } from './pages/my-cards/my-cards.module';
+import { PreferencesModule } from './shared/modules/preferences/preferences.module';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,9 @@ import { ChatModule } from './pages/chat/chat.module';
         HeaderModule,
         LoginModule,
         RegisterModule,
-        ToastModule
+        MyCardsModule,
+        ToastModule,
+        PreferencesModule
     ]
 })
 export class AppModule { }

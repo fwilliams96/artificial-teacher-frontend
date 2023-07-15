@@ -108,6 +108,19 @@ export class ApiHttpService {
 
   /***************************************************************************** */
 
+  public getAndReceiveJson<T>(
+    route: string,
+    params?: HttpParams
+  ): Observable<T> {
+    // console.log(`Body: ${JSON.stringify(body)}`);
+    // console.log(`Headers: ${JSON.stringify(this.getHeaders())}`);
+    
+    return this.http.get<T>(
+      this.createCompleteRoute(route, environment.backendDomain),
+      { headers: this.getHeaders(), params }
+    )
+  }
+
   public postFormDataAndReceiveJson<T> (
     route: string,
     formData: FormData,
@@ -130,6 +143,18 @@ export class ApiHttpService {
     // console.log(`Headers: ${JSON.stringify(this.getHeaders())}`);
     
     return this.http.post<O>(
+      this.createCompleteRoute(route, environment.backendDomain),
+      body,
+      { headers: this.getHeaders(), params }
+    )
+  }
+
+  public putJson<I,O>(
+    route: string,
+    body: I,
+    params?: HttpParams
+  ): Observable<O> {
+    return this.http.put<O>(
       this.createCompleteRoute(route, environment.backendDomain),
       body,
       { headers: this.getHeaders(), params }

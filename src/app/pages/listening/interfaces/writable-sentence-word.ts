@@ -1,6 +1,5 @@
 import { SentenceWord } from "./sentence-word";
 
 export interface WritableSentenceWord extends SentenceWord{
-    userValue: string,
-    wrong: boolean | undefined
+    userValue: string
 }
