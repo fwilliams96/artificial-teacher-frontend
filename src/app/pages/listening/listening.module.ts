@@ -4,6 +4,7 @@ import { ListeningComponent } from './container/listening/listening.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { ListeningService } from './services/listening/listening.service';
+import { AudioPlayerModule } from 'src/app/shared/modules/audio-player/audio-player.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { ListeningService } from './services/listening/listening.service';
   imports: [
     CommonModule,
     FontAwesomeModule,
-    FormsModule
+    FormsModule,
+    AudioPlayerModule
   ],
   providers: [ListeningService]
 })

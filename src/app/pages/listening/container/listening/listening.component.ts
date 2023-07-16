@@ -5,7 +5,9 @@ import {
   faSearch,
   faMicrophone,
   faPaperPlane,
-  faTrash
+  faTrash,
+  faPlay,
+  faPause
 } from '@fortawesome/free-solid-svg-icons'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ListeningService } from '../../services/listening/listening.service';
@@ -30,6 +32,10 @@ export class ListeningComponent implements OnInit, AfterViewInit {
   faMicrophone = faMicrophone
   faTrash = faTrash
   faPaperPlane = faPaperPlane
+  faPlay = faPlay
+  faPause = faPause
+  
+  audioSrc: string | undefined = undefined;
 
   listening: Listening | undefined = undefined
   currentSentenceIndex: number = 0;
@@ -72,8 +78,8 @@ export class ListeningComponent implements OnInit, AfterViewInit {
     if (this.listening) {
       const currentSentence = this.listening.sentences[this.currentSentenceIndex];
       const blob = this.b64toBlob(currentSentence.audio, 'audio/mp4');
-      currentSentence.safeUrl = this.sanitize(this.getURLFromBlob(blob));
-      console.log(currentSentence.safeUrl);
+      this.audioSrc = this.getURLFromBlob(blob);
+
       /*if (!currentSentence.audioBlob) {
         currentSentence.audioBlob = this.b64toBlob(currentSentence.audio, 'audio/mp4');
       }*/
@@ -227,5 +233,6 @@ export class ListeningComponent implements OnInit, AfterViewInit {
       }
     )
   }
+  
 
 }

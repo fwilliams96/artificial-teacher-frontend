@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyCardsComponent } from './container/my-cards/my-cards.component';
+import { AudioPlayerModule } from 'src/app/shared/modules/audio-player/audio-player.module';
 
 
 
@@ -9,7 +10,8 @@ import { MyCardsComponent } from './container/my-cards/my-cards.component';
     MyCardsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    AudioPlayerModule
   ],
   exports: [MyCardsComponent]
 })
