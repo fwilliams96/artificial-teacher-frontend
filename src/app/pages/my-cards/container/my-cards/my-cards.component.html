@@ -11,9 +11,7 @@
                     <div class="card-body" [ngClass]="i%2 === 0 ? 'text-primary': 'text-white'">
                         <h5 class="card-title" [ngClass]="i%2 === 0 ? '': 'text-white'">{{ sentence.word }}</h5>
                         <p class="card-text">{{ sentence.sentence }}</p>
-                        <audio controls>
-                            <source [src]="sanitize(getURLFromBlob(sentence.audio))" type="audio/mp4" />
-                        </audio>
+                        <app-audio-player *ngIf="sentence.audioUrl" [src]="sentence.audioUrl"></app-audio-player>
                     </div>
                 </div>
                 

@@ -6,7 +6,7 @@ export interface Message {
     type: MessageOrigin,
     content_type: ContentType,
     message_type: MessageType,
-    content: string | Activity | Blob
+    content: string | Activity
 }
 
 export enum MessageOrigin {

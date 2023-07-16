@@ -217,7 +217,7 @@ export class ChatComponent implements AfterViewChecked {
       this.messages.push({
         type: MessageOrigin.User,
         content_type: userMessage.content_type,
-        content: this.b64toBlob(userMessage.content as string, `${userMessage.content_type}/mp4`),
+        content: this.getURLFromBlob(this.b64toBlob(userMessage.content as string, `${userMessage.content_type}/mp4`)),
         message_type: MessageType.CONVERSATION
       })
     }
@@ -248,7 +248,7 @@ export class ChatComponent implements AfterViewChecked {
       this.messages.push({
         type: MessageOrigin.Server,
         content_type: serverMessage.content_type,
-        content: this.b64toBlob(serverMessage.content as string, `${serverMessage.content_type}/mp4`),
+        content: this.getURLFromBlob(this.b64toBlob(serverMessage.content as string, `${serverMessage.content_type}/mp4`)),
         message_type: serverMessage.message_type
       })
     }

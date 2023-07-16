@@ -1,5 +1,12 @@
 .chats {
+    place-items: center;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     column-gap: 2rem;
+}
+
+@media (max-width: 800px) {
+    .chats {
+        grid-template-columns: auto;
+    }
 }
