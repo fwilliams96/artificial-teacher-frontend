@@ -80,9 +80,6 @@ export class ListeningComponent implements OnInit, AfterViewInit {
       const blob = this.b64toBlob(currentSentence.audio, 'audio/mp4');
       this.audioSrc = this.getURLFromBlob(blob);
 
-      /*if (!currentSentence.audioBlob) {
-        currentSentence.audioBlob = this.b64toBlob(currentSentence.audio, 'audio/mp4');
-      }*/
       if (!currentSentence.answered) {
         currentSentence.words = this.initializeSentenceWords(currentSentence.words);
         currentSentence.answered = false;

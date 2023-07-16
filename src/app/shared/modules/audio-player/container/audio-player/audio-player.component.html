@@ -1,11 +1,13 @@
 <div class="audio-player">
-    <button 
-        class="icon-button"
-        (click)="toggleListening()">
-        <fa-icon *ngIf="!playingAudio" [icon]="faPlay"></fa-icon>
-        <fa-icon *ngIf="playingAudio" [icon]="faPause"></fa-icon>
-    </button>
-    <span>{{ getCurrentTime() }} / {{ getTotalDuration() }}</span>
+    <div>
+        <button 
+            class="icon-button"
+            (click)="toggleListening()">
+            <fa-icon *ngIf="!playingAudio" [icon]="faPlay"></fa-icon>
+            <fa-icon *ngIf="playingAudio" [icon]="faPause"></fa-icon>
+        </button>
+        <span>{{ getCurrentTime() }} / {{ getTotalDuration() }}</span>
+    </div>
     <input 
         class="form-range"
         type="range" 
