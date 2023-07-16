@@ -17,12 +17,20 @@ export class AudioPlayerComponent {
   faPlay = faPlay
   faPause = faPause
 
-  audio = new Audio();
+  //audio = new Audio();
+  audio: any;
   private _src: string = '';
 
   @Input() set src(value: string | undefined) {
     if (value) {
       this._src = value;
+
+      this.audio = document.createElement('audio');
+      const sourceElement = document.createElement('source');
+      this.audio.appendChild(sourceElement);
+
+      sourceElement.type = 'audio/mp4';
+
       this.audio.src = value;
       this.audio.load();
       this.audio.addEventListener('durationchange', () => {
