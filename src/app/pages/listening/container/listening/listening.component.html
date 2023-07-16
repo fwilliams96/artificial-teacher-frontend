@@ -15,11 +15,7 @@
                     </div>
                 </div>
                 <div *ngIf="currentSentence" class="listening-body" #listeningBody>
-                    <audio #audioListening controls autoplay playsinline>
-                        <source [src]="currentSentence.safeUrl" type="audio/mp4" />
-                    </audio>
-
-                    
+                    <app-audio-player *ngIf="audioSrc" [src]="audioSrc"></app-audio-player>
                     <div class="sentence">
                         <ng-container *ngFor="let word of currentSentence.words">
                             <ng-container *ngIf="isWritable(word)">

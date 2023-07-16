@@ -71,10 +71,19 @@
 .message-item.received .message-content {
     //background-color: #f5f5f5;
     //background-color: #FF9900;
-    background-color: #474B4E;
+    background-color: $primary;
     border-radius: 1rem 1rem 0 1rem;
     padding: 0.5rem 1rem;
+}
+
+.message-item.received .message-content,
+.message-item.received .audio-content {
     margin-right: auto;
+}
+
+:host ::ng-deep .message-item.received .audio-content .audio-player {
+    background-color: $primary;
+    color: white;
 }
 
 /* Estilos para los mensajes enviados */
@@ -84,7 +93,16 @@
     background-color: #215C54;
     border-radius: 1rem 1rem 1rem 0;
     padding: 0.5rem 1rem;
+}
+
+.message-item.sent .message-content,
+.message-item.sent .audio-content {
     margin-left: auto;
+}
+
+:host ::ng-deep .message-item.sent .audio-content .audio-player {
+    background-color: #215C54;
+    color: white;
 }
 
 /* Estilos para el contenido del mensaje */

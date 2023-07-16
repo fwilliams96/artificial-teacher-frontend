@@ -18,6 +18,7 @@ import { ListeningModule } from './pages/listening/listening.module';
 import { ChatModule } from './pages/chat/chat.module';
 import { MyCardsModule } from './pages/my-cards/my-cards.module';
 import { PreferencesModule } from './shared/modules/preferences/preferences.module';
+import { AudioPlayerModule } from './shared/modules/audio-player/audio-player.module';
 
 @NgModule({
     declarations: [
