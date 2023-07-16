@@ -23,7 +23,7 @@ export class ListeningService {
       this.endpointUrl,
       {},
       new HttpParams().append('num_sentences', numSentences)
-    )
+    );
   }
 
   finishListening(listening: Listening): Observable<void> {
