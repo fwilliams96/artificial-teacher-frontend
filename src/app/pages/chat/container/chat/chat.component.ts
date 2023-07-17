@@ -65,14 +65,18 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this.chatBody.nativeElement.scrollTop = this.chatBody.nativeElement.scrollHeight;
 
     this._audioRecorderService.recordingFailed().subscribe(() => {
+      console.log("Recording failed");
       this.isRecording = false;
+      this.stopRecording();
     });
 
     this._audioRecorderService.getRecordedTime().subscribe((time) => {
+      console.log(`Recorded time: ${time}`);
       this.recordedTime = time;
     });
 
     this._audioRecorderService.getRecordedBlob().subscribe((data) => {
+      console.log(`Recorded blob: ${data}`);
       this.blobAudio = data.blob;
       this.blobUrl = URL.createObjectURL(data.blob);
     });
