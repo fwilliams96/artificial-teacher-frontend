@@ -12,13 +12,6 @@
     width: auto;
 }
 
-/* Estilos para los botones de la cabecera */
-.icon-button {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-}
-
 @media (max-width: 640px) {
     .audio-player {
         flex-direction: column;
