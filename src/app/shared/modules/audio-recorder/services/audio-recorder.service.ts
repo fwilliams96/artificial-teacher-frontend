@@ -13,7 +13,7 @@ interface RecordedAudioOutput {
 })
 export class AudioRecorderService {
 
-  private stream: MediaStream | null = null;
+  private stream: MediaStream | undefined = undefined;
   private recorder: any;
   private interval: any;
   private startTime: any;
@@ -49,8 +49,9 @@ export class AudioRecorderService {
       this.record(s);
     }).catch(error => {
       console.log('Error starting recording');
+      this._recordingFailed.complete();
       // this._recordingFailed.next();
-      this._recordingFailed.error(error);
+      // this._recordingFailed.error(error);
     });
   
   }
@@ -97,8 +98,8 @@ export class AudioRecorderService {
       }, () => {
         console.log('Error stopping recording');
         this.stopMedia();
-        // this._recordingFailed.next();
         this._recordingFailed.complete();
+        // this._recordingFailed.complete();
         // this._recordingFailed.error(new Error('Error stopping recording'));
       });
     }
@@ -107,12 +108,12 @@ export class AudioRecorderService {
 
   private stopMedia() {
     if (this.recorder) {
-      this.recorder = null;
+      this.recorder = undefined;
       clearInterval(this.interval);
-      this.startTime = null;
+      this.startTime = undefined;
       if (this.stream) {
         this.stream.getAudioTracks().forEach((track:MediaStreamTrack) => track.stop());
-        this.stream = null;
+        this.stream = undefined;
       }
     }
   }
