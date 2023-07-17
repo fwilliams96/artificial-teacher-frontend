@@ -19,7 +19,7 @@ export class AudioRecorderService {
   private startTime: any;
   private _recorded = new Subject<any>();
   private _recordingTime = new Subject<string>();
-  private _recordingFailed = new Subject<string>();
+  private _recordingFailed = new Subject<void>();
 
   constructor() { }
 
@@ -32,7 +32,7 @@ export class AudioRecorderService {
     return this._recordingTime.asObservable();
   }
 
-  recordingFailed(): Observable<string> {
+  recordingFailed(): Observable<void> {
     return this._recordingFailed.asObservable();
   }
 
@@ -48,8 +48,8 @@ export class AudioRecorderService {
       this.stream = s;
       this.record(s);
     }).catch(error => {
-      console.log('Error starting recording');
-      this._recordingFailed.complete();
+      console.log(`Error starting recording: ${error}`);
+      this._recordingFailed.next();
       // this._recordingFailed.next();
       // this._recordingFailed.error(error);
     });
@@ -98,7 +98,7 @@ export class AudioRecorderService {
       }, () => {
         console.log('Error stopping recording');
         this.stopMedia();
-        this._recordingFailed.complete();
+        this._recordingFailed.next();
         // this._recordingFailed.complete();
         // this._recordingFailed.error(new Error('Error stopping recording'));
       });
