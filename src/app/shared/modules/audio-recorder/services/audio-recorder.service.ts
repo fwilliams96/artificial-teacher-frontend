@@ -14,7 +14,7 @@ interface RecordedAudioOutput {
 export class AudioRecorderService {
 
   private stream: MediaStream | undefined = undefined;
-  private recorder: any;
+  private recorder: RecordRTC.StereoAudioRecorder | undefined = undefined;
   private interval: any;
   private startTime: any;
   private _recorded = new Subject<any>();
@@ -44,9 +44,11 @@ export class AudioRecorderService {
     }
   
     this._recordingTime.next('00:00');
+    
+
     navigator.mediaDevices.getUserMedia({ audio: true }).then(s => {
       this.stream = s;
-      this.record(s);
+      this.record();
     }).catch(error => {
       console.log(`Error starting recording: ${error}`);
       this._recordingFailed.next();
@@ -56,9 +58,12 @@ export class AudioRecorderService {
   
   }
 
-  private record(stream: MediaStream) {
+  private record() {
+    console.log(`Stream active: ${this.stream?.active}`);
 
-    this.recorder = new RecordRTC.StereoAudioRecorder(stream, {
+    if (!this.stream) return;
+
+    this.recorder = new RecordRTC.StereoAudioRecorder(this.stream, {
       type: 'audio'
     });
   
@@ -95,6 +100,15 @@ export class AudioRecorderService {
           this.stopMedia();
           this._recorded.next({ blob: blob, title: mp3Name });
         }
+      });
+    }
+    /*if (this.recorder) {
+      this.recorder.stop((blob: Blob) => {
+        if (this.startTime) {
+          const mp3Name = encodeURIComponent('audio_' + new Date().getTime() + '.mp3');
+          this.stopMedia();
+          this._recorded.next({ blob: blob, title: mp3Name });
+        }
       }, () => {
         console.log('Error stopping recording');
         this.stopMedia();
@@ -102,7 +116,7 @@ export class AudioRecorderService {
         // this._recordingFailed.complete();
         // this._recordingFailed.error(new Error('Error stopping recording'));
       });
-    }
+    }*/
   
   }
 
