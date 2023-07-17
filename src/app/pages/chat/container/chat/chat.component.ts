@@ -307,6 +307,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   startRecording() {
+    console.log("Start recording");
     this.deleteRecording();
 
     this._audioRecorderService.startRecording();
@@ -376,6 +377,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
   
   stopRecording() {
+    console.log("Stop recording");
     /*this.mediaRecorder!.stream.getTracks().forEach( track => track.stop());
     this.mediaRecorder!.stop();*/
     this._audioRecorderService.stopRecording();
@@ -392,6 +394,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
   }
 
   abortRecording() {
+    console.log("Abort recording")
     if (this.isRecording) {
       this.isRecording = false;
       this._audioRecorderService.abortRecording();

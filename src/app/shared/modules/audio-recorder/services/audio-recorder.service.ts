@@ -13,7 +13,7 @@ interface RecordedAudioOutput {
 })
 export class AudioRecorderService {
 
-  private stream: MediaStream | undefined = undefined;
+  private stream: MediaStream | null = null;
   private recorder: any;
   private interval: any;
   private startTime: any;
@@ -111,12 +111,13 @@ export class AudioRecorderService {
       this.startTime = null;
       if (this.stream) {
         this.stream.getAudioTracks().forEach((track:MediaStreamTrack) => track.stop());
-        this.stream = undefined;
+        this.stream = null;
       }
     }
   }
 
   abortRecording() {
+    console.log("Abort recording service")
     this.stopMedia();
   }
 
