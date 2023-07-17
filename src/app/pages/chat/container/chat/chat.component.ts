@@ -294,11 +294,25 @@ export class ChatComponent implements AfterViewChecked {
 
     this.getMedia({audio: true}).subscribe(
       res => {
-        const mime = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/webm;codecs=vp8', 'audio/webm;codecs=opus', 'video/webm;codecs=vp9', 'audio/ogg', 'audio/mp4']
+        const mime = [
+          'audio/wav', 
+          'audio/mpeg', 
+          'audio/webm', 
+          'audio/webm;codecs=vp8', 
+          'audio/webm;codecs=opus', 
+          'video/webm;codecs=vp9', 
+          'audio/ogg', 
+          'audio/mp4',
+          'audio/mp3'
+        ]
         .filter(MediaRecorder.isTypeSupported);
         let mimeType = '';
         console.log(`mime types supported: ${mime}`);
-        if (MediaRecorder.isTypeSupported('audio/mp4')) {
+        if (MediaRecorder.isTypeSupported('audio/mp3')) {
+          console.log('audio/mp3 supported');
+          mimeType = 'audio/mp3';
+        }
+        else if (MediaRecorder.isTypeSupported('audio/mp4')) {
           console.log('audio/mp4 supported');
           mimeType = 'audio/mp4';
         }
@@ -322,6 +336,8 @@ export class ChatComponent implements AfterViewChecked {
 
         this.mediaRecorder.addEventListener("stop", async () => {
           this.audioBlob = new Blob(this.audioChunks, { type: this.mediaRecorder?.mimeType });
+          console.log(`blob mime: ${this.mediaRecorder?.mimeType}`);
+
           // console.log(`Audio blob: ${JSON.stringify(this.audioBlob)}`);
           this.url = URL.createObjectURL(this.audioBlob)
           console.log(`URL blob: ${JSON.stringify(this.url)}`);
