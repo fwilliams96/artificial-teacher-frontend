@@ -71,12 +71,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     });
 
     this._audioRecorderService.getRecordedTime().subscribe((time) => {
-      console.log(`Recorded time: ${time}`);
+      // console.log(`Recorded time: ${time}`);
       this.recordedTime = time;
     });
 
     this._audioRecorderService.getRecordedBlob().subscribe((data) => {
-      console.log(`Recorded blob: ${data}`);
+      // console.log(`Recorded blob: ${data}`);
       this.blobAudio = data.blob;
       this.blobUrl = URL.createObjectURL(data.blob);
     });
@@ -317,7 +317,7 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
     this._audioRecorderService.startRecording();
 
     /*this.getMedia({audio: true}).subscribe(
-      res => {
+      s => {
         const mime = [
           'audio/wav', 
           'audio/mpeg', 
@@ -350,7 +350,11 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         }
 
         console.log(`mime type supported: ${mimeType}`);
-        this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/mp3' });
+
+        const context = new AudioContext();
+        let mediaStreamSource = context.createMediaStreamSource(s);
+
+        this.mediaRecorder = new MediaRecorder(mediaStreamSource.mediaStream, { mimeType: mimeType });
 
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
           // console.log(`Chunk event: ${JSON.stringify(event)}`);
@@ -359,12 +363,12 @@ export class ChatComponent implements AfterViewChecked, OnDestroy {
         });
 
         this.mediaRecorder.addEventListener("stop", async () => {
-          this.audioBlob = new Blob(this.audioChunks, { type: this.mediaRecorder?.mimeType });
+          this.blobAudio = new Blob(this.audioChunks, { type: this.mediaRecorder?.mimeType });
           console.log(`blob mime: ${this.mediaRecorder?.mimeType}`);
 
           // console.log(`Audio blob: ${JSON.stringify(this.audioBlob)}`);
-          this.url = URL.createObjectURL(this.audioBlob)
-          console.log(`URL blob: ${JSON.stringify(this.url)}`);
+          this.blobUrl = URL.createObjectURL(this.blobAudio)
+          console.log(`URL blob: ${JSON.stringify(this.blobUrl)}`);
         });
 
         this.mediaRecorder.start();
