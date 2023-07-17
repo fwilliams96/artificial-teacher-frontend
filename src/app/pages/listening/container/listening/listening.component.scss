@@ -80,3 +80,10 @@
     column-gap: 4px;
     flex-wrap: wrap;
 }
+
+@media (max-width: 440px) {
+    .listening-footer {
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+}
