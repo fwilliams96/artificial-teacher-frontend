@@ -326,7 +326,7 @@ export class ChatComponent implements AfterViewChecked {
         }
 
         console.log(`mime type supported: ${mimeType}`);
-        this.mediaRecorder = new MediaRecorder(res, { mimeType: mimeType });
+        this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/mp3' });
 
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
           /*console.log(`Chunk event: ${JSON.stringify(event)}`);
