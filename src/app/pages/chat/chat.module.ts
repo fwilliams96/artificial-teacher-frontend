@@ -5,6 +5,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from './services/chat/chat.service';
 import { AudioPlayerModule } from 'src/app/shared/modules/audio-player/audio-player.module';
+import { AudioRecorderModule } from 'src/app/shared/modules/audio-recorder/audio-recorder.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { AudioPlayerModule } from 'src/app/shared/modules/audio-player/audio-pla
     CommonModule,
     FontAwesomeModule,
     FormsModule,
-    AudioPlayerModule
+    AudioPlayerModule,
+    AudioRecorderModule
   ],
   providers: [ChatService]
 })
