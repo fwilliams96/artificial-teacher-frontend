@@ -60,7 +60,7 @@
                         <fa-icon [icon]="faMicrophone"></fa-icon>
                     </button>
                 </div>
-                <div class="d-flex px-2 pb-2" *ngIf="url">
+                <div class="recorded-audio" *ngIf="url">
                     <app-audio-player [src]="url"></app-audio-player>
                     <button 
                         class="icon-button"
