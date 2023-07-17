@@ -105,12 +105,12 @@ export class ChatComponent implements AfterViewChecked {
       message_type: MessageType.CONVERSATION
     }
 
-    console.log("Sent message: ", userMessage);
+    // console.log("Sent message: ", userMessage);
 
     if (this.voiceEnabled) {
       this._chatService.sendMessage(this.contextId, userMessage, ContentType.AUDIO).subscribe(
         serverMessages => {
-          console.log("Received message: ", serverMessages);
+          // console.log("Received message: ", serverMessages);
 
           this.addUserMessage(userMessage);
           serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
@@ -125,7 +125,7 @@ export class ChatComponent implements AfterViewChecked {
     else {
       this._chatService.sendMessage(this.contextId, userMessage).subscribe(
         serverMessages => {
-          console.log("Received messages: ", serverMessages);
+          // console.log("Received messages: ", serverMessages);
   
           this.addUserMessage(userMessage);
           serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
@@ -157,7 +157,7 @@ export class ChatComponent implements AfterViewChecked {
     }
 
     if (this.audioBlob) {
-      console.log("Sending audio..");
+      // console.log("Sending audio..");
       this.blobToBase64(this.audioBlob).then(base64Audio => {
         
         const userMessage: UserMessage = {
@@ -166,12 +166,12 @@ export class ChatComponent implements AfterViewChecked {
           message_type: MessageType.CONVERSATION
         };
 
-        console.log(`Sent message: ${JSON.stringify(userMessage)}`);
+        // console.log(`Sent message: ${JSON.stringify(userMessage)}`);
 
         if (this.voiceEnabled) {
           this._chatService.sendMessage(this.contextId!, userMessage, ContentType.AUDIO).subscribe(
             serverMessages => {
-              console.log("Received messages: ", serverMessages);
+              // console.log("Received messages: ", serverMessages);
       
               this.addUserMessage(userMessage);
               serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
@@ -189,7 +189,7 @@ export class ChatComponent implements AfterViewChecked {
         else {
           this._chatService.sendMessage(this.contextId!, userMessage).subscribe(
             serverMessages => {
-              console.log("Received messages: ", serverMessages);
+              // console.log("Received messages: ", serverMessages);
       
               this.addUserMessage(userMessage);
               serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
@@ -260,7 +260,7 @@ export class ChatComponent implements AfterViewChecked {
         message_type: serverMessage.message_type
       });
     }
-    console.log("Received server messages", this.messages);
+    // console.log("Received server messages", this.messages);
     
   }
 
@@ -296,29 +296,33 @@ export class ChatComponent implements AfterViewChecked {
       res => {
         const mime = ['audio/wav', 'audio/mpeg', 'audio/webm', 'audio/webm;codecs=vp8', 'audio/webm;codecs=opus', 'video/webm;codecs=vp9', 'audio/ogg', 'audio/mp4']
         .filter(MediaRecorder.isTypeSupported);
+        let mimeType = '';
         console.log(`mime types supported: ${mime}`);
         if (MediaRecorder.isTypeSupported('audio/mp4')) {
           console.log('audio/mp4 supported');
-          this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/mp4' });
+          mimeType = 'audio/mp4';
         }
         else if (MediaRecorder.isTypeSupported('audio/webm')) {
           console.log('audio/webm supported');
-          this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/webm' });
+          mimeType = 'audio/webm';
         }
         else {
           console.log('either audio/mp4 nor audio/webm are supported, setting audio/wav');
-          this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/wav' });
+          mimeType = 'audio/wav';
         }
 
+        console.log(`mime type supported: ${mimeType}`);
+        this.mediaRecorder = new MediaRecorder(res, { mimeType: mimeType });
+
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
-          console.log(`Chunk event: ${JSON.stringify(event)}`);
-          console.log(`Chunk event data: ${JSON.stringify(event)}`);
+          /*console.log(`Chunk event: ${JSON.stringify(event)}`);
+          console.log(`Chunk event data: ${JSON.stringify(event)}`);*/
           this.audioChunks.push(event.data);
         });
 
         this.mediaRecorder.addEventListener("stop", async () => {
           this.audioBlob = new Blob(this.audioChunks, { type: this.mediaRecorder?.mimeType });
-          console.log(`Audio blob: ${JSON.stringify(this.audioBlob)}`);
+          // console.log(`Audio blob: ${JSON.stringify(this.audioBlob)}`);
           this.url = URL.createObjectURL(this.audioBlob)
           console.log(`URL blob: ${JSON.stringify(this.url)}`);
         });
@@ -372,16 +376,6 @@ export class ChatComponent implements AfterViewChecked {
 	  return blob;
   }
 
-  /*blobToBase64(blob: Blob): Observable<any> {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    return from(new Promise(resolve => {
-      reader.onloadend = () => {
-        resolve(reader.result);
-      };
-    }));
-  };*/
-
   blobToBase64(blob: Blob): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -395,7 +389,7 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   arrayBufferToBase64(buffer: ArrayBuffer): string {
-    console.log(`Array buffer: ${JSON.stringify(buffer)}`)
+    // console.log(`Array buffer: ${JSON.stringify(buffer)}`)
     let binary = '';
     const bytes = new Uint8Array(buffer);
     const len = bytes.byteLength;
@@ -419,11 +413,11 @@ export class ChatComponent implements AfterViewChecked {
       message_type: MessageType.ACTIVITY
     }
 
-    console.log("Sent message: ", userMessage);
+    // console.log("Sent message: ", userMessage);
 
     this._chatService.sendMessage(this.contextId, userMessage).subscribe(
       serverMessages => {
-        console.log("Received messages: ", serverMessages);
+        // console.log("Received messages: ", serverMessages);
         this.disableLastServerActivity();
         serverMessages.forEach(serverMessage => this.addServerMessage(serverMessage));
         this.activityRunning = false;

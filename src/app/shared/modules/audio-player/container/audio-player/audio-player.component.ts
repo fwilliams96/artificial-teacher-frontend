@@ -31,11 +31,11 @@ export class AudioPlayerComponent {
 
       sourceElement.type = 'audio/mp3';
 
-      console.log(`Play audio/mp3: ${this.audio.canPlayType('audio/mp3')}`);
+      /*console.log(`Play audio/mp3: ${this.audio.canPlayType('audio/mp3')}`);
       console.log(`Play audio/mp4: ${this.audio.canPlayType('audio/mp4')}`);
       console.log(`Play audio/wav: ${this.audio.canPlayType('audio/wav')}`);
       console.log(`Play video/mp4: ${this.audio.canPlayType('video/mp4')}`);
-      console.log(`Play audio/mpeg: ${this.audio.canPlayType('audio/mpeg')}`);
+      console.log(`Play audio/mpeg: ${this.audio.canPlayType('audio/mpeg')}`);*/
 
       this.audio.src = value;
       this.audio.load();
