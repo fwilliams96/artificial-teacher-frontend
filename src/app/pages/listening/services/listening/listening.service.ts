@@ -18,7 +18,7 @@ export class ListeningService {
   ) { }
 
   startListening(numSentences: number = 3): Observable<Listening> {
-    //return of(this.getMockListening());
+    // return of(this.getMockListening());
     return this.apiHttpService.postJsonAndReceiveJson<{}, Listening>(
       this.endpointUrl,
       {},
