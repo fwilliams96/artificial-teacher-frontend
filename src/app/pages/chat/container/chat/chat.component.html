@@ -54,14 +54,14 @@
                     </textarea>
                     <button 
                         class="icon-button"
-                        [class.active-button]="recording"
+                        [class.active-button]="isRecording"
                         (click)="toggleRecording()"
                         [disabled]="activityRunning">
                         <fa-icon [icon]="faMicrophone"></fa-icon>
                     </button>
                 </div>
-                <div class="recorded-audio" *ngIf="url">
-                    <app-audio-player [src]="url"></app-audio-player>
+                <div class="recorded-audio" *ngIf="blobUrl">
+                    <app-audio-player [src]="blobUrl"></app-audio-player>
                     <button 
                         class="icon-button"
                         (click)="deleteRecording()">

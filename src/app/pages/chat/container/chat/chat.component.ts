@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import {
   faPaperclip,
   faEllipsisV,
@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { Message, MessageOrigin } from '../../interfaces/message';
 import { Observable, from, last } from 'rxjs';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ChatService } from '../../services/chat/chat.service';
 import { ServerContext } from '../../interfaces/server-context';
 import { DangerToastService } from 'src/app/shared/modules/toast/services/danger-toast/danger-toast.service';
@@ -18,13 +18,15 @@ import { Activity } from '../../interfaces/activity';
 import { MessageType } from '../../interfaces/message-type';
 import { ServerMessage } from '../../interfaces/server-message';
 import { ContentType } from '../../interfaces/content-type';
+import * as RecordRTC from 'recordrtc';
+import { AudioRecorderService } from 'src/app/shared/modules/audio-recorder/services/audio-recorder.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements AfterViewChecked {
+export class ChatComponent implements AfterViewChecked, OnDestroy {
 
   faPaperclip = faPaperclip
   faEllipsisV = faEllipsisV
@@ -39,26 +41,41 @@ export class ChatComponent implements AfterViewChecked {
 
   @ViewChild("chatBody") chatBody!: ElementRef;
 
-  recording = false
+  isRecording = false;
+  recordedTime: any;
 
   mediaRecorder: MediaRecorder | null = null;
   audioChunks: Blob[] = [];
-  audioBlob: Blob | undefined = undefined;
+
+  blobUrl: string | undefined = undefined;
+  blobAudio: Blob | undefined = undefined;
 
   voiceEnabled = false
-
-  url : string | undefined = undefined
 
   activityRunning = false
 
   constructor(
     private readonly _chatService: ChatService,
+    private _audioRecorderService: AudioRecorderService,
     private domSanitizer: DomSanitizer,
     private readonly _dangerToastService: DangerToastService
   ) {}
 
   ngAfterViewChecked() {
     this.chatBody.nativeElement.scrollTop = this.chatBody.nativeElement.scrollHeight;
+
+    this._audioRecorderService.recordingFailed().subscribe(() => {
+      this.isRecording = false;
+    });
+
+    this._audioRecorderService.getRecordedTime().subscribe((time) => {
+      this.recordedTime = time;
+    });
+
+    this._audioRecorderService.getRecordedBlob().subscribe((data) => {
+      this.blobAudio = data.blob;
+      this.blobUrl = URL.createObjectURL(data.blob);
+    });
   }
 
   onKeyDown(event: Event) {
@@ -156,9 +173,9 @@ export class ChatComponent implements AfterViewChecked {
       return;
     }
 
-    if (this.audioBlob) {
+    if (this.blobAudio) {
       // console.log("Sending audio..");
-      this.blobToBase64(this.audioBlob).then(base64Audio => {
+      this.blobToBase64(this.blobAudio).then(base64Audio => {
         
         const userMessage: UserMessage = {
           content: base64Audio,
@@ -280,8 +297,8 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   toggleRecording() {
-    this.recording = !this.recording;
-    if (this.recording) {
+    this.isRecording = !this.isRecording;
+    if (this.isRecording) {
       this.startRecording();
     }
     else {
@@ -292,7 +309,9 @@ export class ChatComponent implements AfterViewChecked {
   startRecording() {
     this.deleteRecording();
 
-    this.getMedia({audio: true}).subscribe(
+    this._audioRecorderService.startRecording();
+
+    /*this.getMedia({audio: true}).subscribe(
       res => {
         const mime = [
           'audio/wav', 
@@ -329,8 +348,8 @@ export class ChatComponent implements AfterViewChecked {
         this.mediaRecorder = new MediaRecorder(res, { mimeType: 'audio/mp3' });
 
         this.mediaRecorder.addEventListener("dataavailable", (event) => {
-          /*console.log(`Chunk event: ${JSON.stringify(event)}`);
-          console.log(`Chunk event data: ${JSON.stringify(event)}`);*/
+          // console.log(`Chunk event: ${JSON.stringify(event)}`);
+          // console.log(`Chunk event data: ${JSON.stringify(event)}`);
           this.audioChunks.push(event.data);
         });
 
@@ -349,7 +368,7 @@ export class ChatComponent implements AfterViewChecked {
       err => {
         console.log(err);
       }
-    )
+    )*/
   }
 
   getMedia(constraints: MediaStreamConstraints): Observable<any> {
@@ -357,8 +376,9 @@ export class ChatComponent implements AfterViewChecked {
   }
   
   stopRecording() {
-    this.mediaRecorder!.stream.getTracks().forEach( track => track.stop());
-    this.mediaRecorder!.stop();
+    /*this.mediaRecorder!.stream.getTracks().forEach( track => track.stop());
+    this.mediaRecorder!.stop();*/
+    this._audioRecorderService.stopRecording();
   }
 
   sanitize(url: string) {
@@ -366,9 +386,20 @@ export class ChatComponent implements AfterViewChecked {
   }
 
   deleteRecording() {
-    this.url = undefined;
-    this.audioBlob = undefined;
+    this.blobAudio = undefined;
+    this.blobUrl = undefined;
     this.audioChunks = [];
+  }
+
+  abortRecording() {
+    if (this.isRecording) {
+      this.isRecording = false;
+      this._audioRecorderService.abortRecording();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.abortRecording();
   }
 
   b64toBlob(b64Data: string, contentType: string) {
