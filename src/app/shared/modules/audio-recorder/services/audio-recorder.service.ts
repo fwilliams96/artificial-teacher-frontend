@@ -126,7 +126,10 @@ export class AudioRecorderService {
       clearInterval(this.interval);
       this.startTime = undefined;
       if (this.stream) {
-        this.stream.getAudioTracks().forEach((track:MediaStreamTrack) => track.stop());
+        this.stream.getAudioTracks().forEach((track:MediaStreamTrack) => {
+          track.stop();
+          this.stream?.removeTrack(track);
+        });
         this.stream = undefined;
       }
     }
