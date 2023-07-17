@@ -37,7 +37,7 @@ export class AudioRecorderService {
   }
 
   startRecording() {
-
+    console.log(`Start recording service, recorder: ${this.recorder}`);
     if (this.recorder) {
       // It means recording is already started or it is already recording something
       return;
@@ -48,6 +48,7 @@ export class AudioRecorderService {
       this.stream = s;
       this.record(s);
     }).catch(error => {
+      console.log('Error starting recording');
       // this._recordingFailed.next();
       this._recordingFailed.error(error);
     });
@@ -57,8 +58,7 @@ export class AudioRecorderService {
   private record(stream: MediaStream) {
 
     this.recorder = new RecordRTC.StereoAudioRecorder(stream, {
-      type: 'audio',
-      numberOfAudioChannels: 2
+      type: 'audio'
     });
   
     this.recorder.record();
@@ -86,7 +86,7 @@ export class AudioRecorderService {
   }
 
   stopRecording() {
-
+    console.log(`Stop recording service, recorder: ${this.recorder}`);
     if (this.recorder) {
       this.recorder.stop((blob: Blob) => {
         if (this.startTime) {
@@ -95,10 +95,11 @@ export class AudioRecorderService {
           this._recorded.next({ blob: blob, title: mp3Name });
         }
       }, () => {
+        console.log('Error stopping recording');
         this.stopMedia();
         // this._recordingFailed.next();
-        // this._recordingFailed.complete();
-        this._recordingFailed.error(new Error('Error stopping recording'));
+        this._recordingFailed.complete();
+        // this._recordingFailed.error(new Error('Error stopping recording'));
       });
     }
   
