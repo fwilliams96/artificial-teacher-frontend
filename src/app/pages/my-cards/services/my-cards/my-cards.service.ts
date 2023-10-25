@@ -8,7 +8,7 @@ import { WordSentence } from '../../interfaces/word-sentence';
 })
 export class MyCardsService {
 
-  private endpointUrl = '/sentences';
+  private endpointUrl = '/users/cards';
 
   constructor(
     private readonly apiHttpService: ApiHttpService

@@ -1,0 +1,103 @@
+@import "src/styles";
+
+/* Estilos para el contenedor principal */
+.pronunciation-container {
+    display: flex;
+    flex-direction: column;
+    //height: 100%;
+    //border: 1px solid rgba(0, 0, 0, 0.247);
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    align-items: center;
+    //overflow: scroll;
+}
+
+/* Estilos para la cabecera del chat */
+.pronunciation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Estilos para el título del chat */
+.pronunciation-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.pronunciation-title h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.pronunciation-title span {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* Estilos para el cuerpo del chat */
+.pronunciation-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    //overflow-y: scroll;
+    overflow: auto;
+    align-items: center;
+    row-gap: 2rem;
+    //justify-content: space-evenly;
+}
+
+    
+/* Estilos para el pie del chat */
+.pronunciation-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+}
+
+/* Estilos para el cuadro de texto de entrada */
+.pronunciation-footer textarea {
+    margin-right: 0.5rem;
+}
+
+.active-button {
+    color: #C93B3B;
+}
+
+.form-check-input:checked {
+    background-color: $primary;
+    border-color: $primary;
+}
+
+.record {
+    display: flex;
+    column-gap: 0.5rem;
+}
+
+.sentence {
+    display: flex;
+    justify-content: center;
+    column-gap: 4px;
+    flex-wrap: wrap;
+}
+
+.invalid-word {
+    color: #dc3545
+}
+
+.valid-word {
+    color: #198754
+}
+
+@media (max-width: 440px) {
+    .pronunciation-footer {
+        flex-direction: column;
+        row-gap: 0.5rem;
+    }
+}

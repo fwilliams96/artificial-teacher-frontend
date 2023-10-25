@@ -1,0 +1,111 @@
+<main class="main">
+    <div class="page-header-jumbotron">
+
+    </div>
+
+    <div class="page-content">
+        <div class="container-small">
+
+            <h1 class="text-center">Role play</h1>
+
+            <div class="mt-5 chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <h3>Goku</h3>
+                        <span>En línea</span>
+                    </div>
+                    <div class="form-check form-switch" *ngIf="rolePlay && !rolePlayEnded">
+                        <input 
+                            class="form-check-input" 
+                            type="checkbox" 
+                            role="button" 
+                            id="flexSwitchCheckDefault" 
+                            [checked]="voiceEnabled" 
+                            (change)="toggleVoice()">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Voice</label>
+                    </div>
+                </div>
+                <div class="chat-body" #chatBody>
+                    <div class="message-list">
+                        <ng-container *ngFor="let message of messages" [ngSwitch]="message.origin">
+                            <ng-container *ngSwitchCase="'USER'">
+                                <ng-container [ngTemplateOutlet]="messageUser"
+                                    [ngTemplateOutletContext]="{message}"
+                                ></ng-container>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'AGENT'">
+                                <ng-container [ngTemplateOutlet]="messageServer"
+                                    [ngTemplateOutletContext]="{message}"
+                                ></ng-container>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="chat-footer" *ngIf="rolePlay && !rolePlayEnded">
+                    <textarea 
+                        placeholder="Escribe tu mensaje aquí"
+                        class="form-control"
+                        [(ngModel)]="message"
+                        (keydown.enter)="onKeyDown($event)"
+                        (keyup.enter)="sendText()">
+                    </textarea>
+                    <button 
+                        class="icon-button"
+                        [class.active-button]="isRecording"
+                        (click)="toggleRecording()">
+                        <fa-icon [icon]="faMicrophone"></fa-icon>
+                    </button>
+                </div>
+                <div class="recorded-audio" *ngIf="blobUrl">
+                    <app-audio-player [src]="blobUrl"></app-audio-player>
+                    <button 
+                        class="icon-button"
+                        (click)="deleteRecording()">
+                        <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+                    <button 
+                        class="icon-button"
+                        (click)="sendRecording()">
+                        <fa-icon [icon]="faPaperPlane"></fa-icon>
+                    </button>
+                </div>
+                <div class="chat-footer justify-content-center footer-actions">
+                    <a [routerLink]="['/home']" class="btn btn-outline-primary">Volver</a>
+                    <!-- <button class="btn btn-primary" *ngIf="rolePlay && !rolePlayEnded">Finalizar role play</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<ng-template #messageUser let-message="message">
+    <div class="message-item sent">
+        <ng-container *ngIf="isTextConversation(message)">
+            <div class="message-content">
+                <p class="text-white">{{ message.message }}</p>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="isAudioConversation(message)">
+            <div class="audio-content">
+                <app-audio-player *ngIf="message.message" [src]="message.message"></app-audio-player>
+            </div>
+        </ng-container>
+        <span class="message-time">{{ message.sent_date }}</span>
+    </div>
+</ng-template>
+
+<ng-template #messageServer let-message="message">
+    <div class="message-item received">
+        <ng-container *ngIf="isTextConversation(message)">
+            <div class="message-content">
+                <p class="text-white">{{ message.message }}</p>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="isAudioConversation(message)">
+            <div class="audio-content">
+                <app-audio-player *ngIf="message.message" [src]="message.message"></app-audio-player>
+            </div>
+        </ng-container>
+        <span class="message-time">{{ message.sent_date }}</span>
+    </div>
+</ng-template>

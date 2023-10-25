@@ -1,0 +1,42 @@
+<main class="main">
+    <div class="page-content">
+        <div class="container-small d-flex flex-column justify-content-center align-items-center">
+
+            <h1 class="text-center mb-5">Mi rutina</h1>
+
+            <ng-container *ngIf="routine">
+
+                <h2 class="">Role play</h2>
+                <a class="btn btn-primary" [routerLink]="['/role-play', routine.role_play.id]">Ir al role play</a>
+
+                <h2 class="text-center mt-5">Listenings</h2>
+                <div *ngFor="let listening of routine.listenings; let i = index" class="card border-primary mb-3"
+                    [ngClass]="i%2 === 0 ? 'border-primary': 'bg-primary'" 
+                    style="max-width: 18rem;">
+                        <a [routerLink]="['/listening', listening.id]">
+                            <div class="card-body" [ngClass]="i%2 === 0 ? 'text-primary': 'text-white'">
+                                <h5 class="card-title" [ngClass]="i%2 === 0 ? '': 'text-white'">Listening {{ i+1 }}</h5>
+                                <p class="card-text">{{ listening.topic }}</p>
+                            </div>
+                        </a>
+                </div>
+
+                <h2 class="text-center mt-5">Pronunciations</h2>
+                <div *ngFor="let pronunciation of routine.pronunciations; let i = index" class="card border-primary mb-3"
+                    [ngClass]="i%2 === 0 ? 'border-primary': 'bg-primary'" 
+                    style="max-width: 18rem;">
+                        <a [routerLink]="['/pronunciation', pronunciation.id]">
+                            <div class="card-body" [ngClass]="i%2 === 0 ? 'text-primary': 'text-white'">
+                                <h5 class="card-title" [ngClass]="i%2 === 0 ? '': 'text-white'">Pronunciation {{ i+1 }}</h5>
+                                <p class="card-text">{{ pronunciation.topic }}</p>
+                            </div>
+                        </a>
+                </div>
+
+            </ng-container>
+
+            
+
+        </div>
+    </div>
+</main>

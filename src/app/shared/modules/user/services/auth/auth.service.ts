@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiHttpService } from 'src/app/shared/services/api-http/api-http.service';
 import { Auth } from '../../interfaces/auth';
-import { User } from '../../interfaces/user';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,8 @@ export class AuthService {
   usersEndpointUrl = '/users'
 
   constructor(
-    private _apiHttpService: ApiHttpService
+    private _apiHttpService: ApiHttpService,
+    private _userService: UserService
   ) {}
 
   login(email: string, password: string): Observable<Auth> {
@@ -46,14 +47,9 @@ export class AuthService {
     this._apiHttpService.removeToken();
     return new Observable((observer) => {
       this.isLoggedIn$.next(false);
+      this._userService.user$.next(undefined);
       observer.complete();
     })    
   }
-  
-  register(user: User): Observable<User> {
-    return this._apiHttpService.postJsonAndReceiveJson<User, User>(
-      `${this.usersEndpointUrl}`,
-      user
-    );
-  }
+
 }

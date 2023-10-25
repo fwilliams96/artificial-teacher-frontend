@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/modules/auth/services/auth/auth.service';
 import { DangerToastService } from 'src/app/shared/modules/toast/services/danger-toast/danger-toast.service';
 import { InfoToastService } from 'src/app/shared/modules/toast/services/info-toast/info-toast.service';
+import { AuthService } from 'src/app/shared/modules/user/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -50,7 +50,7 @@ export class LoginComponent {
   onSubmit() {
     this.authService.login(this.email.value, this.password.value).subscribe(
       (response) => {
-        this._infoToastService.show(`¡Bienvenido ${this.email.value}!`)
+        this._infoToastService.show(`¡Bienvenido ${this.email.value}!`);
         this._router.navigate(['/home']);
       },
       (error) => {
