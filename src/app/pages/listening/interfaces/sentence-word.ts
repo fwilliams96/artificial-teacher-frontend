@@ -1,6 +1,6 @@
 export interface SentenceWord {
     word: string,
-    isWord: boolean,
+    is_word: boolean,
     askable: boolean,
     wrong: boolean | undefined
 }

@@ -1,0 +1,68 @@
+<main class="main">
+    <div class="page-header-jumbotron">
+
+    </div>
+
+    <div class="page-content">
+        <div class="container-small">
+
+            <h1 class="text-center">Pronunciation</h1>
+
+            <div *ngIf="pronunciation" class="mt-5 pronunciation-container">
+                <div class="pronunciation-header">
+                    <div class="pronunciation-title">
+                        <h3>{{ pronunciation.topic }}</h3>
+                    </div>
+                </div>
+                <div *ngIf="pronunciation" class="pronunciation-body" #pronunciationBody>
+                    <div class="sentence">
+                        <ng-container *ngFor="let word of pronunciation.sentence.words">
+                            <ng-container *ngIf="word.is_word">
+                                <span [ngClass]="pronunciation.finished ? word.wrong ? 'invalid-word' : 'valid-word': '' ">{{ word.word }}</span>
+                            </ng-container>
+                            <ng-container *ngIf="!word.is_word">
+                                <span>{{ word.word }}</span>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+
+                    <ng-container *ngIf="!pronunciation.finished">
+                        <div class="record">
+                            <button 
+                                class="icon-button"
+                                [class.active-button]="isRecording"
+                                (click)="toggleRecording()">
+                                <fa-icon [icon]="faMicrophone"></fa-icon>
+                            </button>
+                            <button 
+                                class="icon-button"
+                                (click)="deleteRecording()">
+                                <fa-icon [icon]="faTrash"></fa-icon>
+                            </button>
+                        </div>
+                    </ng-container>
+
+                    <div class="d-flex flex-column align-items-center" *ngIf="userAudioUrl">
+                        <p class="fw-bold">Tu audio</p>
+                        <app-audio-player [src]="userAudioUrl"></app-audio-player>
+                    </div>
+
+                    <div class="d-flex flex-column align-items-center" *ngIf="pronunciation.finished">
+                        <p class="fw-bold">Audio del profesor</p>
+                        <app-audio-player *ngIf="serverAudioUrl" [src]="serverAudioUrl"></app-audio-player>
+                    </div>
+
+                    <ng-container *ngIf="!pronunciation.finished">
+                        <button type="button" [disabled]="!userAudioBlob" class="btn btn-primary" (click)="checkPronunciation()">Comprobar</button>
+                    </ng-container>
+
+                </div>
+
+                <div class="pronunciation-footer">
+                    <button type="button" *ngIf="pronunciation.finished" class="btn btn-primary" (click)="finishPronunciation()">Finalizar</button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</main>

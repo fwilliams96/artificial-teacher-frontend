@@ -5,7 +5,7 @@
             <h1 class="text-center mb-5">Empieza a practicar</h1>
 
             <div class="d-grid chats">
-                <a [routerLink]="['/listening']">
+                <a (click)="startListening()" role="button">
                     <div class="card border-primary mb-3" style="max-width: 18rem;">
                         <div class="card-body text-primary">
                             <h5 class="card-title">Listening</h5>
@@ -14,15 +14,40 @@
                         </div>
                     </div>
                 </a>
-                <a [routerLink]="['/chat']">
+                <a (click)="startPronunciation()" role="button">
                     <div class="card bg-primary mb-3" style="max-width: 18rem;">
                         <div class="card-body text-white">
-                            <h5 class="card-title text-white">Chat</h5>
-                            <p class="card-text">Habla de forma libre e ilimitada con nuestro agente robot.</p>
+                            <h5 class="card-title text-white">Pronunciación</h5>
+                            <p class="card-text">Practica tu pronunciación con este método.</p>
+                            
                         </div>
                     </div>
                 </a>
-                
+                <a (click)="startFreeChat()" role="button">
+                    <div class="card border-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body text-primary">
+                            <h5 class="card-title">Chat</h5>
+                            <p class="card-text">Mantén una conversación libre en inglés con nuestro agente de forma ilimitada.</p>
+                        </div>
+                    </div>
+                </a>
+                <a (click)="startRolePlay()" role="button">
+                    <div class="card bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body text-white">
+                            <h5 class="card-title text-white">Role play</h5>
+                            <p class="card-text">Crea un role play para practicar situaciones de la vida real.</p>
+                            
+                        </div>
+                    </div>
+                </a>
+                <a [routerLink]="['/my-routines']">
+                    <div class="card border-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body text-primary">
+                            <h5 class="card-title">Rutinas</h5>
+                            <p class="card-text">Crea una rutina compuesta por varios ejercicios y un role play basado en situaciones reales.</p>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

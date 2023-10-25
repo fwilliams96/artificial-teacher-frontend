@@ -10,7 +10,6 @@ import { SpinnerModule } from './shared/modules/spinner/spinner.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from './shared/modules/spinner/interceptors/http-request-interceptor';
 import { HeaderModule } from './shared/modules/header/header.module';
-import { HttpAuthRequestInterceptor } from './shared/modules/auth/interceptors/http-auth-request-interceptor';
 import { LoginModule } from './pages/login/login.module';
 import { RegisterModule } from './pages/register/register.module';
 import { ToastModule } from "./shared/modules/toast/toast.module";
@@ -19,6 +18,13 @@ import { ChatModule } from './pages/chat/chat.module';
 import { MyCardsModule } from './pages/my-cards/my-cards.module';
 import { PreferencesModule } from './shared/modules/preferences/preferences.module';
 import { AudioPlayerModule } from './shared/modules/audio-player/audio-player.module';
+import { FreeChatModule } from './pages/free-chat/free-chat.module';
+import { MyRoutineModule } from './pages/my-routine/my-routine.module';
+import { MyRoutinesModule } from './pages/my-routines/my-routines.module';
+import { RolePlayModule } from './pages/role-play/role-play.module';
+import { WallOfFameModule } from './pages/wall-of-fame/wall-of-fame.module';
+import { HttpAuthRequestInterceptor } from './shared/modules/user/interceptors/http-auth-request-interceptor';
+import { PronunciationModule } from './pages/pronunciation/pronunciation.module';
 
 @NgModule({
     declarations: [
@@ -35,6 +41,7 @@ import { AudioPlayerModule } from './shared/modules/audio-player/audio-player.mo
         RouterModule,
         HomeModule,
         ChatModule,
+        FreeChatModule,
         ListeningModule,
         FontAwesomeModule,
         SpinnerModule,
@@ -43,8 +50,13 @@ import { AudioPlayerModule } from './shared/modules/audio-player/audio-player.mo
         LoginModule,
         RegisterModule,
         MyCardsModule,
+        MyRoutineModule,
+        MyRoutinesModule,
         ToastModule,
-        PreferencesModule
+        PreferencesModule,
+        RolePlayModule,
+        WallOfFameModule,
+        PronunciationModule
     ]
 })
 export class AppModule { }

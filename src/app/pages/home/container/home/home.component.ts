@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FreeChatService } from 'src/app/pages/free-chat/services/free-chat.service';
+import { ListeningService } from 'src/app/pages/listening/services/listening/listening.service';
+import { PronunciationService } from 'src/app/pages/pronunciation/services/pronunciation.service';
+import { RolePlayService } from 'src/app/pages/role-play/services/role-play.service';
 import { PreferencesModalComponent } from 'src/app/shared/modules/preferences/components/preferences-modal/preferences-modal.component';
 import { Preference } from 'src/app/shared/modules/preferences/interfaces/preference';
 import { UserPreference } from 'src/app/shared/modules/preferences/interfaces/user-preference';
 import { PreferencesService } from 'src/app/shared/modules/preferences/services/preferences/preferences.service';
 import { UserPreferencesService } from 'src/app/shared/modules/preferences/services/user-preferences/user-preferences.service';
+import { DangerToastService } from 'src/app/shared/modules/toast/services/danger-toast/danger-toast.service';
 import { InfoToastService } from 'src/app/shared/modules/toast/services/info-toast/info-toast.service';
 
 @Component({
@@ -18,10 +24,17 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private readonly _preferencesService: PreferencesService,
+    private readonly _listeningService: ListeningService,
+    private readonly _pronunciationService: PronunciationService,
+    private readonly _rolePlayService: RolePlayService,
+    private readonly _freeChatService: FreeChatService,
     private readonly _userPreferencesService: UserPreferencesService,
     private modalService: NgbModal,
     private readonly _infoToastService: InfoToastService,
+    private router: Router,
+    private readonly _dangerToastService: DangerToastService
   ) {}
+
 
   ngOnInit(): void {
     this._userPreferencesService.getUserPreferences().subscribe(
@@ -68,6 +81,55 @@ export class HomeComponent implements OnInit {
         }
       },
       err => {
+        console.log(err);
+      }
+    )
+  }
+
+  startListening() {
+    this._listeningService.startListening().subscribe(
+      listening => {
+        this.router.navigate(['/listening', listening.id]);
+      },
+      err => {
+        this._dangerToastService.show('Ha habido un error al crear el listening');
+        console.log(err);
+      }
+    )
+
+  }
+
+  startPronunciation() {
+    this._pronunciationService.createPronunciation().subscribe(
+      pronunciation => {
+        this.router.navigate(['/pronunciation', pronunciation.id]);
+      },
+      err => {
+        this._dangerToastService.show('Ha habido un error al crear el ejercicio de pronunciación');
+        console.log(err);
+      }
+    )
+  }
+
+  startRolePlay() {
+    this._rolePlayService.createRolePlay().subscribe(
+      rolePlay => {
+        this.router.navigate(['/role-play', rolePlay.id]);
+      },
+      err => {
+        this._dangerToastService.show('Ha habido un error al crear el role play');
+        console.log(err);
+      }
+    )
+  }
+
+  startFreeChat() {
+    this._freeChatService.startChat().subscribe(
+      chat => {
+        this.router.navigate(['/free-chat', chat.id]);
+      },
+      err => {
+        this._dangerToastService.show('Ha habido un error al crear el chat libre');
         console.log(err);
       }
     )

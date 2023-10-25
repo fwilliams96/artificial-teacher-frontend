@@ -18,7 +18,6 @@ import { Activity } from '../../interfaces/activity';
 import { MessageType } from '../../interfaces/message-type';
 import { ServerMessage } from '../../interfaces/server-message';
 import { ContentType } from '../../interfaces/content-type';
-import * as RecordRTC from 'recordrtc';
 import { AudioRecorderService } from 'src/app/shared/modules/audio-recorder/services/audio-recorder.service';
 
 @Component({

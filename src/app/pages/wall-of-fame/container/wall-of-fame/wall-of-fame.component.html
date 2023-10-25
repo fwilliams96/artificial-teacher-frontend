@@ -1,0 +1,21 @@
+<main class="main">
+    <div class="page-content">
+        <div class="container-small">
+
+            <h1 class="text-center mb-5">Wall of fame</h1>
+
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <p class="" *ngIf="topUsers.length == 0">Todavía no hay usuarios top, ¡conviértete en el primero!</p>
+
+                <div class="card top-users mb-4" *ngIf="topUsers.length > 0">
+                    <ul class="list-group list-group-flush">
+                      <li *ngFor="let topUser of topUsers; let i = index" class="list-group-item">
+                        <p class="fw-bold">{{ i + 1 }}. {{ topUser.first_name }} {{ topUser.last_name }}</p>
+                        Nivel {{ topUser.level }} ({{ topUser.score }}%)
+                      </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
