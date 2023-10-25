@@ -10,7 +10,7 @@
                 <div class="card top-users mb-4" *ngIf="topUsers.length > 0">
                     <ul class="list-group list-group-flush">
                       <li *ngFor="let topUser of topUsers; let i = index" class="list-group-item">
-                        <p class="fw-bold">{{ i + 1 }}. {{ topUser.first_name }} {{ topUser.last_name }}</p>
+                        <p class="fw-bold">{{ i + 1 }}. {{ topUser.first_name }}</p>
                         Nivel {{ topUser.level }} ({{ topUser.score }}%)
                       </li>
                     </ul>
