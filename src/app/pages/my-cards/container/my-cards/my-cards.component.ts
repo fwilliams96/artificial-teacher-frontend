@@ -23,7 +23,7 @@ export class MyCardsComponent implements OnInit {
         this.sentences = res.map(sentence => {
           return {
             ...sentence,
-            audioUrl: this.getURLFromBlob(this.b64toBlob(sentence.audio, 'audio/mp3')),
+            audioUrl: this.getURLFromBlob(this.b64toBlob(sentence.sentence_speech, 'audio/mp3')),
           }
         });
 

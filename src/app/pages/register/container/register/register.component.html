@@ -14,8 +14,26 @@
                 <h1 class="text-center">Registro</h1>
 
                 <form class="mt-5" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-                    
+
                     <div class="form-group">
+                        <label for="firstName" class="form-label">Nombre</label>
+                        <input type="text" name="firstName" formControlName="firstName"
+                        class="form-control">
+                        <small class="error" *ngIf="firstName.touched && firstName.errors">
+                            El nombre no es válido
+                        </small>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <label for="lastName" class="form-label">Apellido</label>
+                        <input type="text" name="lastName" formControlName="lastName"
+                        class="form-control">
+                        <small class="error" *ngIf="lastName.touched && lastName.errors">
+                            El apellido no es válido
+                        </small>
+                    </div>
+                    
+                    <div class="form-group mt-4">
                         <label for="email" class="form-label">Correo electrónico</label>
                         <input type="text" name="email" formControlName="email"
                         class="form-control">
@@ -33,20 +51,9 @@
                         </small>
                     </div>
 
-                    <!--<div class="form-group mt-4">
-                        <label for="confirmPassword" class="form-label">Contraseña</label>
-                        <input type="password" name="confirmPassword" formControlName="confirmPassword"
-                        class="form-control">
-                        <small class="error" *ngIf="password.touched && password.errors">
-                            La contraseñas no coinciden
-                        </small>
-                    </div>-->
-
                     <div class="mt-4">
                         <button class="btn btn-outline-primary w-100" type="submit" [disabled]="registerForm.invalid">Registro</button>
                     </div>
-
-                    <!--<span>¿No tienes cuenta? <a class="register-link" [routerLink]="['/register']">¡Regístrate ahora!</a></span>-->
 
                 </form>
 

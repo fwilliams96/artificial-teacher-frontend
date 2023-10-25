@@ -1,8 +1,10 @@
 import { Sentence } from "./sentence"
 
 export interface Listening {
-    id: string,
+    id?: string | undefined,
     topic: string,
+    user_id?: string | undefined
+    finished: boolean,
     sentences: Sentence[],
-    finished: boolean
+    routine_id?: string | undefined
 }

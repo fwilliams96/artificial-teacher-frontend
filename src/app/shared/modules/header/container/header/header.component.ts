@@ -1,23 +1,44 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth/auth.service';
+import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SuccessToastService } from '../../../toast/services/success-toast/success-toast.service';
 import { InfoToastService } from '../../../toast/services/info-toast/info-toast.service';
+import {
+  faUser
+} from '@fortawesome/free-solid-svg-icons'
+import { AuthService } from '../../../user/services/auth/auth.service';
+import { UserService } from '../../../user/services/user/user.service';
+import { User } from '../../../user/interfaces/user';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements AfterViewInit {
+
+  user: User | undefined = undefined;
+
+  isLogged$ = this._authService.isLoggedIn$;
+
+  faUser = faUser
 
   constructor(
     private readonly _authService: AuthService,
+    private readonly _userService: UserService,
     private readonly _infoToastService: InfoToastService,
     private _router: Router
   ) {}
 
-  isLogged$ = this._authService.isLoggedIn$;
+  ngAfterViewInit(): void {
+
+    this._userService.userObs.subscribe(
+      user => {
+        this.user = user
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
 
   logout() {
     this._authService.logout().subscribe(
@@ -37,6 +58,10 @@ export class HeaderComponent {
 
   goToMyCards() {
     this._router.navigate(['/my-cards']);
+  }
+
+  goToMyRoutines() {
+    this._router.navigate(['/my-routines']);
   }
 
 }

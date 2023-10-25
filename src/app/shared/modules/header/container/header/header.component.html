@@ -4,18 +4,36 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto navbar-right">
-        <li class="nav-item" *ngIf="!(isLogged$ | async)">
-          <a class="nav-link active" [routerLink]="['/login']">Iniciar sesión</a>
-        </li>
-        <li class="nav-item" *ngIf="isLogged$ | async">
-          <a class="nav-link active" role="button" (click)="goToMyCards()">Mis cartas</a>
-        </li>
-        <li class="nav-item" *ngIf="isLogged$ | async">
-          <a class="nav-link active" role="button" (click)="logout()">Cerrar sesión</a>
+      <ul ngbNav #nav="ngbNav" class="navbar-nav">
+        <li ngbNavItem>
+          <a class="nav-link text-white" [routerLink]="['/wall-of-fame']">Wall of fame</a>
         </li>
       </ul>
+      <ul ngbNav #nav="ngbNav" class="navbar-nav ms-auto navbar-right">
+        <div class="score" *ngIf="user">
+          <p class="text-white mb-0">Nivel {{ user.level }}</p>
+          <p class="text-white mb-0 level">
+            <ngb-progressbar type="warning" textType="dark" [value]="user.score" [showValue]="true"></ngb-progressbar>
+          </p>
+        </div>
+        <li ngbNavItem *ngIf="!(isLogged$ | async)">
+          <a class="nav-link" [routerLink]="['/login']">Iniciar sesión</a>
+        </li>
+        <li *ngIf="(isLogged$ | async)" ngbDropdown ngbNavItem role="presentation">
+          <a role="button" class="nav-link" ngbDropdownToggle>
+            <fa-icon class="icon-down" [icon]="faUser"></fa-icon>
+          </a>
+          <div ngbDropdownMenu class="dropdown-menu-end">
+            <a ngbDropdownItem role="button" (click)="goToMyRoutines()">Mis rutinas</a>
+            <a ngbDropdownItem role="button" (click)="goToMyCards()">Mis cartas</a>
+            <div class="dropdown-divider"></div>
+            <a ngbDropdownItem role="button" (click)="logout()">Cerrar sesión</a>
+          </div>
+        </li>
+      </ul>
+
     </div>
   </div>
 </nav>

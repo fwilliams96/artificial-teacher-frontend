@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import {
   faPaperclip,
   faEllipsisV,
@@ -17,14 +17,14 @@ import { Sentence } from '../../interfaces/sentence';
 import { SentenceWord } from '../../interfaces/sentence-word';
 import { WritableSentenceWord } from '../../interfaces/writable-sentence-word';
 import { InfoToastService } from 'src/app/shared/modules/toast/services/info-toast/info-toast.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-listening',
   templateUrl: './listening.component.html',
   styleUrls: ['./listening.component.scss']
 })
-export class ListeningComponent implements OnInit, AfterViewInit {
+export class ListeningComponent implements AfterViewInit {
 
   faPaperclip = faPaperclip
   faEllipsisV = faEllipsisV
@@ -37,38 +37,41 @@ export class ListeningComponent implements OnInit, AfterViewInit {
   
   audioSrc: string | undefined = undefined;
 
+  id_listening: string | null = null;
+
   listening: Listening | undefined = undefined
+
   currentSentenceIndex: number = 0;
   currentSentence: Sentence | undefined = undefined
 
   @ViewChild('audioListening') audioListening!: ElementRef;
 
   constructor(
-    private readonly _chatService: ListeningService,
+    private readonly _listeningService: ListeningService,
     private domSanitizer: DomSanitizer,
     private readonly _infoToastService: InfoToastService,
     private readonly _dangerToastService: DangerToastService,
-    private _router: Router
+    private _router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngAfterViewInit(): void {
-    this.startListening();
+    this.recoverListening();
   }
 
-  ngOnInit(): void {
-    
-  }
-  
-  startListening() {
+  recoverListening() {
 
-    this._chatService.startListening().subscribe(
+    this.id_listening = this.route.snapshot.paramMap.get('id');
+    if (!this.id_listening) return;
+
+    this._listeningService.getListening(this.id_listening).subscribe(
       listening => {
         this.listening = listening;
         this.currentSentenceIndex = 0;
         this.initializeCurrentSentence();
       },
       err => {
-        this._dangerToastService.show('Ha habido un error al crear el listening');
+        this._dangerToastService.show('Ha habido un error al recuperar el listening');
         console.log(err);
       }
     )
@@ -220,7 +223,7 @@ export class ListeningComponent implements OnInit, AfterViewInit {
       return;
     }
     this.listening.finished = true;
-    this._chatService.finishListening(this.listening).subscribe(
+    this._listeningService.finishListening(this.listening).subscribe(
       res => {
         this._router.navigate(['/home']);
         this._infoToastService.show('¡Has finalizado el listening!');

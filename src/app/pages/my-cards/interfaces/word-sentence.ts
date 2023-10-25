@@ -1,7 +1,7 @@
 export interface WordSentence {
     id: string
-    audio: string
     word: string
     sentence: string
+    sentence_speech: string
     user_id: string
 }

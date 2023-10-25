@@ -1,0 +1,172 @@
+@import "src/styles";
+
+/* Estilos para el contenedor principal */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    //height: 100%;
+    height: 60vh;
+    //border: 1px solid rgba(0, 0, 0, 0.247);
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    //overflow: scroll;
+}
+
+/* Estilos para la cabecera del chat */
+.chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Estilos para el título del chat */
+.chat-title {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.chat-title h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.chat-title span {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* Estilos para el cuerpo del chat */
+.chat-body {
+    flex: 1;
+    //overflow-y: scroll;
+    overflow: auto;
+}
+
+/* Estilos para la lista de mensajes */
+.message-list {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+/* Estilos para los elementos de mensaje */
+.message-item {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para los mensajes recibidos */
+.message-item.received .message-content {
+    //background-color: #f5f5f5;
+    //background-color: #FF9900;
+    background-color: $primary;
+    border-radius: 1rem 1rem 0 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.message-item.received .message-content,
+.message-item.received .audio-content {
+    margin-right: auto;
+}
+
+:host ::ng-deep .message-item.received .audio-content .audio-player {
+    background-color: $primary;
+    color: white;
+}
+
+/* Estilos para los mensajes enviados */
+.message-item.sent .message-content {
+    // background-color: #dcf8c6;
+    //background-color: $secondary;
+    background-color: #215C54;
+    border-radius: 1rem 1rem 1rem 0;
+    padding: 0.5rem 1rem;
+}
+
+.message-item.sent .message-content,
+.message-item.sent .audio-content {
+    margin-left: auto;
+}
+
+:host ::ng-deep .message-item.sent .audio-content .audio-player {
+    background-color: #215C54;
+    color: white;
+}
+
+/* Estilos para el contenido del mensaje */
+.message-content {
+    max-width: 80%;
+}
+
+.message-content p {
+    margin: 0; /* Elimina el margen predeterminado del párrafo */
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.message-time {
+    font-size: 0.8rem;
+    color: #999;
+    margin-left: 1rem;
+}
+    
+/* Estilos para el pie del chat */
+.chat-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+}
+
+/* Estilos para el cuadro de texto de entrada */
+.chat-footer textarea {
+    margin-right: 0.5rem;
+
+}
+
+.active-button {
+    color: #C93B3B;
+}
+
+.form-check-input:checked {
+    background-color: $primary;
+    border-color: $primary;
+}
+
+.sent-audio {
+    background-color: $secondary;
+}
+
+.received-audio {
+    background-color: #f5f5f5;
+}
+
+.flash-card-options {
+    column-gap: 1rem;
+}
+
+.recorded-audio {
+    display: flex;
+    margin: 0 auto;
+}
+
+.footer-actions {
+    column-gap: 1rem;
+}
+
+@media (max-width: 440px) {
+    .recorded-audio {
+        flex-direction: column;
+        row-gap: 0.5rem;
+    }
+
+    .chat-footer {
+        flex-direction: column;
+        row-gap: 0.5rem;
+    }
+}
