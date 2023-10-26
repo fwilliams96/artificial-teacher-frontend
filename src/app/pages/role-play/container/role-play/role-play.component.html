@@ -10,9 +10,9 @@
 
             <div class="mt-5 chat-container">
                 <div class="chat-header">
-                    <div class="chat-title">
-                        <h3>Goku</h3>
-                        <span>En línea</span>
+                    <div class="chat-title" *ngIf="rolePlay">
+                        <h3>{{ rolePlay.type | rolePlayType }}</h3>
+                        <!-- <span>En línea</span> -->
                     </div>
                     <div class="form-check form-switch" *ngIf="rolePlay && !rolePlayEnded">
                         <input 

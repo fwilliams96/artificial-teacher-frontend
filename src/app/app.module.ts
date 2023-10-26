@@ -17,7 +17,6 @@ import { ListeningModule } from './pages/listening/listening.module';
 import { ChatModule } from './pages/chat/chat.module';
 import { MyCardsModule } from './pages/my-cards/my-cards.module';
 import { PreferencesModule } from './shared/modules/preferences/preferences.module';
-import { AudioPlayerModule } from './shared/modules/audio-player/audio-player.module';
 import { FreeChatModule } from './pages/free-chat/free-chat.module';
 import { MyRoutineModule } from './pages/my-routine/my-routine.module';
 import { MyRoutinesModule } from './pages/my-routines/my-routines.module';

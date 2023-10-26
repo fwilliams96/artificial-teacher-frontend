@@ -6,10 +6,13 @@ import { AudioRecorderModule } from 'src/app/shared/modules/audio-recorder/audio
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterModule } from '@angular/router';
+import { RolePlayTypePipe } from './pipes/role-play-type.pipe';
+import { RolePlayTypeModule } from 'src/app/shared/modules/role-play-type/role-play-type.module';
 
 @NgModule({
   declarations: [
-    RolePlayComponent
+    RolePlayComponent,
+    RolePlayTypePipe
   ],
   imports: [
     CommonModule,
@@ -17,7 +20,8 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     AudioPlayerModule,
     AudioRecorderModule,
-    RouterModule
+    RouterModule,
+    RolePlayTypeModule
   ]
 })
 export class RolePlayModule { }
