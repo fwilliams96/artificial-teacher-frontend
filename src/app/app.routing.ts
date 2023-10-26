@@ -26,8 +26,8 @@ const appRoutes: Routes = [
     { path: 'my-routines', component: MyRoutinesComponent, canActivate: [identityGuard] },
     { path: 'my-routine/:id', component: MyRoutineComponent, canActivate: [identityGuard] },
     { path: 'role-play/:id', component: RolePlayComponent, canActivate: [identityGuard] },
-    { path: 'login', component: LoginComponent },
-    { path: 'wall-of-fame', component: WallOfFameComponent },
+    { path: 'login', component: LoginComponent, canActivate: [registerGuard] },
+    { path: 'wall-of-fame', component: WallOfFameComponent, canActivate: [identityGuard] },
     { path: 'register', component: RegisterComponent, canActivate: [registerGuard] }
   ]
   

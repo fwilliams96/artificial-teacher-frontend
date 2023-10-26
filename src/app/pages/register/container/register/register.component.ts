@@ -28,14 +28,14 @@ export class RegisterComponent {
         '',
         [
           Validators.required,
-          Validators.pattern("/^[a-z ,.'-]+$")
+          Validators.pattern("^[a-zà-òá-óA-ZÀ-ÒÁ-Ó ,.'-]+$")
         ]
       ],
       lastName: [
         '',
         [
           Validators.required,
-          Validators.pattern("/^[a-z ,.'-]+$")
+          Validators.pattern("^[a-zà-òá-óA-ZÀ-ÒÁ-Ó ,.'-]+$")
         ]
       ],
       email: [
