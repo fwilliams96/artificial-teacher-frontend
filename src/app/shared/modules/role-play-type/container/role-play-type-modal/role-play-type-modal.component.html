@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h4 class="modal-title">¿Que tipo de role play deseas realizar?</h4>
+</div>
+<div class="modal-body">
+    <select class="form-select" aria-label="Role play type" #rp (change)="onRolePlayTypeChanged(rp.value)">
+        <option selected value="JOB_INTERVIEW">Job interview</option>
+        <option value="BUY_SUPEMARKET">Buying at supermarket</option>
+        <option value="CHECKIN_AIRPORT">Checkin in airport</option>
+        <option value="ORDER_FOOD_RESTAURANT">Order food in a restaurant</option>
+        <option value="CHECKIN_ACCOMMODATION">Checkin in a hotel</option>
+        <option value="DOCTOR_VISIT">Doctor visit</option>
+        <option value="TRAVEL_AGENCY">Travel agency</option>
+        <option value="PARENTS_SCHOOL_MEETING">Parents school meeting</option>
+        <option value="PARTYING_WITH_STRANGERS">Partying with strangers</option>
+        <option value="URGENCY_CALL_POLICE">Urgent police call</option>
+    </select>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="activeModal.dismiss('cancel click')">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="onSave()">Elegir</button>
+</div>
