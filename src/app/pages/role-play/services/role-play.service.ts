@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiHttpService } from 'src/app/shared/services/api-http/api-http.service';
 import { HttpParams } from '@angular/common/http';
-import { RolePlay } from '../interfaces/role-play';
+import { RolePlay, RolePlayType } from '../interfaces/role-play';
 import { RolePlayMessage } from '../interfaces/role-play-message';
 
 @Injectable({
@@ -16,10 +16,11 @@ export class RolePlayService {
     private readonly apiHttpService: ApiHttpService
   ) { }
 
-  createRolePlay(): Observable<RolePlay> {
+  createRolePlay(rolePlayType: RolePlayType): Observable<RolePlay> {
     return this.apiHttpService.postJsonAndReceiveJson<{}, RolePlay>(
       this.endpointUrl,
-      {}
+      {},
+      new HttpParams().append('role_play_type', rolePlayType)
     );
   }
 

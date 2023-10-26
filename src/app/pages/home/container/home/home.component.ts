@@ -4,12 +4,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FreeChatService } from 'src/app/pages/free-chat/services/free-chat.service';
 import { ListeningService } from 'src/app/pages/listening/services/listening/listening.service';
 import { PronunciationService } from 'src/app/pages/pronunciation/services/pronunciation.service';
+import { RolePlayType } from 'src/app/pages/role-play/interfaces/role-play';
 import { RolePlayService } from 'src/app/pages/role-play/services/role-play.service';
 import { PreferencesModalComponent } from 'src/app/shared/modules/preferences/components/preferences-modal/preferences-modal.component';
 import { Preference } from 'src/app/shared/modules/preferences/interfaces/preference';
 import { UserPreference } from 'src/app/shared/modules/preferences/interfaces/user-preference';
 import { PreferencesService } from 'src/app/shared/modules/preferences/services/preferences/preferences.service';
 import { UserPreferencesService } from 'src/app/shared/modules/preferences/services/user-preferences/user-preferences.service';
+import { RolePlayTypeModalComponent } from 'src/app/shared/modules/role-play-type/container/role-play-type-modal/role-play-type-modal.component';
 import { DangerToastService } from 'src/app/shared/modules/toast/services/danger-toast/danger-toast.service';
 import { InfoToastService } from 'src/app/shared/modules/toast/services/info-toast/info-toast.service';
 
@@ -112,7 +114,24 @@ export class HomeComponent implements OnInit {
   }
 
   startRolePlay() {
-    this._rolePlayService.createRolePlay().subscribe(
+    const modalRef = this.modalService.open(RolePlayTypeModalComponent, { backdrop: false, keyboard: false });
+
+    modalRef.result.then(
+      result => {
+        console.log(result);
+        this.createRolePlay(result);
+      },
+      reason => {
+        console.log(reason);
+      }
+    )
+    
+  }
+
+  createRolePlay(rolePlayTypeStr: string) {
+    const rolePlayType = RolePlayType[rolePlayTypeStr as keyof typeof RolePlayType];
+
+    this._rolePlayService.createRolePlay(rolePlayType).subscribe(
       rolePlay => {
         this.router.navigate(['/role-play', rolePlay.id]);
       },
