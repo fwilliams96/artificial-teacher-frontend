@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PronunciationService } from '../../services/pronunciation.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { InfoToastService } from 'src/app/shared/modules/toast/services/info-toast/info-toast.service';
@@ -14,7 +14,7 @@ import { faTrash, faMicrophone } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './pronunciation.component.html',
   styleUrls: ['./pronunciation.component.scss']
 })
-export class PronunciationComponent {
+export class PronunciationComponent implements OnInit, AfterViewInit{
 
   faTrash = faTrash
   faMicrophone = faMicrophone
@@ -35,6 +35,9 @@ export class PronunciationComponent {
 
   recordLabel = 'Record';
 
+  showMobile = false;
+  recordButtonLabel = 'Grabar audio';
+
   constructor(
     private readonly _pronunciationService: PronunciationService,
     private _audioRecorderService: AudioRecorderService,
@@ -44,6 +47,21 @@ export class PronunciationComponent {
     private _router: Router,
     private route: ActivatedRoute
   ) {}
+
+  ngOnInit(): void {
+    const determineMobile = (e: any) => {
+      if (e.matches) {
+        this.showMobile = true;
+      } else {
+        this.showMobile = false;
+      }
+    }
+
+    const laptopScreen = window.matchMedia('(max-width: 990px)');
+    determineMobile(laptopScreen);
+
+    laptopScreen.addEventListener('change', determineMobile);
+  }
 
   ngAfterViewInit(): void {
     this.recoverPronunciation();
@@ -141,9 +159,11 @@ export class PronunciationComponent {
     this.isRecording = !this.isRecording;
     if (this.isRecording) {
       this.startRecording();
+      this.recordButtonLabel = 'Parar audio';
     }
     else {
       this.stopRecording();
+      this.recordButtonLabel = 'Grabar audio';
     }
   }
 
