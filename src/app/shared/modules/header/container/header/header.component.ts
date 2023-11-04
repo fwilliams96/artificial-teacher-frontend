@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { InfoToastService } from '../../../toast/services/info-toast/info-toast.service';
 import {
@@ -13,7 +13,7 @@ import { User } from '../../../user/interfaces/user';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements AfterViewInit {
+export class HeaderComponent implements OnInit {
 
   user: User | undefined = undefined;
 
@@ -28,11 +28,22 @@ export class HeaderComponent implements AfterViewInit {
     private _router: Router
   ) {}
 
-  ngAfterViewInit(): void {
-
-    this._userService.userObs.subscribe(
-      user => {
-        this.user = user
+  ngOnInit(): void {
+    this._authService.isLoggedInObs.subscribe(
+      isLogged => {
+        if (isLogged) {
+          this._userService.getUser().subscribe(
+            user => {
+              this.user = user;
+            },
+            error => {
+              console.log(error);
+            }
+          );
+        }
+        else {
+          this.user = undefined;
+        }
       },
       error => {
         console.log(error);
