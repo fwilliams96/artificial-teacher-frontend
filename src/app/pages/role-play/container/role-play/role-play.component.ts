@@ -294,9 +294,11 @@ export class RolePlayComponent implements OnInit, AfterViewInit, AfterViewChecke
     this.isRecording = !this.isRecording;
     if (this.isRecording) {
       this.startRecording();
+      this.recordButtonLabel = 'Parar audio';
     }
     else {
       this.stopRecording();
+      this.recordButtonLabel = 'Grabar audio';
     }
   }
 
