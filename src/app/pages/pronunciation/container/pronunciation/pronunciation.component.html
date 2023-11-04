@@ -28,17 +28,33 @@
 
                     <ng-container *ngIf="!pronunciation.finished">
                         <div class="record">
-                            <button 
-                                class="icon-button"
-                                [class.active-button]="isRecording"
-                                (click)="toggleRecording()">
-                                <fa-icon [icon]="faMicrophone"></fa-icon>
-                            </button>
-                            <button 
-                                class="icon-button"
-                                (click)="deleteRecording()">
-                                <fa-icon [icon]="faTrash"></fa-icon>
-                            </button>
+                            <ng-container *ngIf="showMobile">
+                                <button 
+                                    class="btn btn-primary" 
+                                    (click)="toggleRecording()">
+                                    {{ recordButtonLabel }}
+                                </button>
+                                <button 
+                                    *ngIf="userAudioUrl"
+                                    class="btn btn-outline-primary" 
+                                    (click)="deleteRecording()">
+                                    Descartar audio
+                                </button>
+                            </ng-container>
+                            <ng-container *ngIf="!showMobile">
+                                <button 
+                                    class="icon-button"
+                                    [class.active-button]="isRecording"
+                                    (click)="toggleRecording()">
+                                    <fa-icon [icon]="faMicrophone"></fa-icon>
+                                </button>
+                                <button
+                                    *ngIf="userAudioUrl"
+                                    class="icon-button"
+                                    (click)="deleteRecording()">
+                                    <fa-icon [icon]="faTrash"></fa-icon>
+                                </button>
+                            </ng-container>
                         </div>
                     </ng-container>
 
