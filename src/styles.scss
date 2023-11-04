@@ -81,9 +81,16 @@ a {
 }
 
 .container-small {
-    width: 60%;
-    max-width: 650px;
+    width: 75%;
+    max-width: 750px;
     margin: 0 auto;
+}
+
+@media (max-width: 769px) {
+    .container-small {
+        width: 100%;
+        max-width: max-content;
+    }
 }
 
 small {

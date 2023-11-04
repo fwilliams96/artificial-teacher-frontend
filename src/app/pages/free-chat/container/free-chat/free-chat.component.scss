@@ -126,7 +126,6 @@
 /* Estilos para el cuadro de texto de entrada */
 .chat-footer textarea {
     margin-right: 0.5rem;
-
 }
 
 .active-button {
@@ -152,20 +151,21 @@
 
 .recorded-audio {
     display: flex;
-    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.recorded-audio-actions {
+    display: flex;
+    column-gap: 0.5rem;
 }
 
 .footer-actions {
-    column-gap: 1rem;
+    column-gap: 0.5rem;
 }
 
-@media (max-width: 440px) {
+@media (max-width: 640px) {
     .recorded-audio {
-        flex-direction: column;
-        row-gap: 0.5rem;
-    }
-
-    .chat-footer {
         flex-direction: column;
         row-gap: 0.5rem;
     }

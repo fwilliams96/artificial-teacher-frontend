@@ -22,7 +22,7 @@
                             id="flexSwitchCheckDefault" 
                             [checked]="voiceEnabled" 
                             (change)="toggleVoice()">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Voice</label>
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Voz</label>
                     </div>
                 </div>
                 <div class="chat-body" #chatBody>
@@ -49,25 +49,50 @@
                         (keydown.enter)="onKeyDown($event)"
                         (keyup.enter)="sendText()">
                     </textarea>
-                    <button 
-                        class="icon-button"
-                        [class.active-button]="isRecording"
-                        (click)="toggleRecording()">
-                        <fa-icon [icon]="faMicrophone"></fa-icon>
-                    </button>
+                    <ng-container *ngIf="showMobile">
+                        <button 
+                            class="btn btn-primary" 
+                            (click)="toggleRecording()">
+                            {{ recordButtonLabel }}
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="!showMobile">
+                        <button 
+                            class="icon-button"
+                            [class.active-button]="isRecording"
+                            (click)="toggleRecording()">
+                            <fa-icon [icon]="faMicrophone"></fa-icon>
+                        </button>
+                    </ng-container>
                 </div>
                 <div class="recorded-audio" *ngIf="blobUrl">
                     <app-audio-player [src]="blobUrl"></app-audio-player>
-                    <button 
-                        class="icon-button"
-                        (click)="deleteRecording()">
-                        <fa-icon [icon]="faTrash"></fa-icon>
-                    </button>
-                    <button 
-                        class="icon-button"
-                        (click)="sendRecording()">
-                        <fa-icon [icon]="faPaperPlane"></fa-icon>
-                    </button>
+                    <div class="recorded-audio-actions">
+                        <ng-container *ngIf="showMobile">
+                            <button 
+                                class="btn btn-outline-primary" 
+                                (click)="deleteRecording()">
+                                Descartar audio
+                            </button>
+                            <button 
+                                class="btn btn-primary" 
+                                (click)="sendRecording()">
+                                Enviar audio
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="!showMobile">
+                            <button 
+                            class="icon-button"
+                            (click)="deleteRecording()">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                        </button>
+                        <button 
+                            class="icon-button"
+                            (click)="sendRecording()">
+                            <fa-icon [icon]="faPaperPlane"></fa-icon>
+                        </button>
+                        </ng-container>
+                    </div>
                 </div>
                 <div class="chat-footer justify-content-center footer-actions">
                     <a [routerLink]="['/home']" class="btn btn-outline-primary">Volver</a>

@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   faPaperclip,
   faEllipsisV,
@@ -6,7 +6,7 @@ import {
   faMicrophone,
   faPaperPlane,
   faTrash
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
 import { FreeChatMessage, FreeChatMessageOrigin, FreeChatMessageType } from '../../interfaces/free-chat-message';
 import { FreeChatService } from '../../services/free-chat.service';
 import { AudioRecorderService } from 'src/app/shared/modules/audio-recorder/services/audio-recorder.service';
@@ -21,7 +21,7 @@ import { FreeChat } from '../../interfaces/free-chat';
   templateUrl: './free-chat.component.html',
   styleUrls: ['./free-chat.component.scss']
 })
-export class FreeChatComponent implements AfterViewChecked, OnDestroy {
+export class FreeChatComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
 
   faPaperclip = faPaperclip
   faEllipsisV = faEllipsisV
@@ -32,6 +32,9 @@ export class FreeChatComponent implements AfterViewChecked, OnDestroy {
 
   messages: FreeChatMessage[] = []
   message = ''
+
+  showMobile = false;
+  recordButtonLabel = 'Grabar audio';
 
   @ViewChild("chatBody") chatBody!: ElementRef;
 
@@ -57,6 +60,21 @@ export class FreeChatComponent implements AfterViewChecked, OnDestroy {
     private readonly _dangerToastService: DangerToastService,
     private route: ActivatedRoute
   ) {}
+
+  ngOnInit(): void {
+    const determineMobile = (e: any) => {
+      if (e.matches) {
+        this.showMobile = true;
+      } else {
+        this.showMobile = false;
+      }
+    }
+
+    const laptopScreen = window.matchMedia('(max-width: 990px)');
+    determineMobile(laptopScreen);
+
+    laptopScreen.addEventListener('change', determineMobile);
+  }
 
   ngAfterViewInit(): void {
     this.recoverChat();
@@ -284,9 +302,11 @@ export class FreeChatComponent implements AfterViewChecked, OnDestroy {
     this.isRecording = !this.isRecording;
     if (this.isRecording) {
       this.startRecording();
+      this.recordButtonLabel = 'Parar audio';
     }
     else {
       this.stopRecording();
+      this.recordButtonLabel = 'Grabar audio';
     }
   }
 
