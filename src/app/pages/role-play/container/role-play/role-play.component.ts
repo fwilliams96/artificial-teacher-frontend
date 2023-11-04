@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   faPaperclip,
   faEllipsisV,
@@ -22,7 +22,7 @@ import { InfoToastService } from 'src/app/shared/modules/toast/services/info-toa
   templateUrl: './role-play.component.html',
   styleUrls: ['./role-play.component.scss']
 })
-export class RolePlayComponent implements AfterViewChecked, OnDestroy, AfterViewInit {
+export class RolePlayComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy, AfterViewInit {
 
   faPaperclip = faPaperclip
   faEllipsisV = faEllipsisV
@@ -33,6 +33,9 @@ export class RolePlayComponent implements AfterViewChecked, OnDestroy, AfterView
 
   messages: RolePlayMessage[] = []
   message = ''
+
+  showMobile = false;
+  recordButtonLabel = 'Grabar audio';
 
   @ViewChild("chatBody") chatBody!: ElementRef;
 
@@ -59,6 +62,21 @@ export class RolePlayComponent implements AfterViewChecked, OnDestroy, AfterView
     private readonly _infoToastService: InfoToastService,
     private route: ActivatedRoute
   ) {}
+
+  ngOnInit(): void {
+    const determineMobile = (e: any) => {
+      if (e.matches) {
+        this.showMobile = true;
+      } else {
+        this.showMobile = false;
+      }
+    }
+
+    const laptopScreen = window.matchMedia('(max-width: 990px)');
+    determineMobile(laptopScreen);
+
+    laptopScreen.addEventListener('change', determineMobile);
+  }
 
   ngAfterViewInit(): void {
     this.recoverRolePlay();
