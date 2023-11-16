@@ -24,6 +24,7 @@ import { RolePlayModule } from './pages/role-play/role-play.module';
 import { WallOfFameModule } from './pages/wall-of-fame/wall-of-fame.module';
 import { HttpAuthRequestInterceptor } from './shared/modules/user/interceptors/http-auth-request-interceptor';
 import { PronunciationModule } from './pages/pronunciation/pronunciation.module';
+import { DescriptionModule } from './pages/description/description.module';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,8 @@ import { PronunciationModule } from './pages/pronunciation/pronunciation.module'
         PreferencesModule,
         RolePlayModule,
         WallOfFameModule,
-        PronunciationModule
+        PronunciationModule,
+        DescriptionModule
     ]
 })
 export class AppModule { }

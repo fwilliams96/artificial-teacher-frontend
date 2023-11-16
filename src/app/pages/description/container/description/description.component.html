@@ -1,0 +1,79 @@
+<main class="main">
+    <div class="page-header-jumbotron">
+
+    </div>
+
+    <div class="page-content">
+        <div class="container-small">
+
+            <h1 class="text-center">Description</h1>
+
+            <div *ngIf="description" class="mt-5 description-container">
+
+                <div>
+                    <img class="img-fluid w-100" [src]="description.image" alt="Description image">                
+                </div>
+
+                <div class="description-text mt-4">
+                    <label for="userDescription" class="form-label">Describe la imagen superior</label>
+                    <textarea 
+                        [disabled]="description.finished"
+                        placeholder="There are ..."
+                        name="userDescription"
+                        [(ngModel)]="descriptionText"
+                        class="form-control"
+                        style="height: 130px;">
+                    </textarea>
+
+                    <button 
+                        *ngIf="!description.finished" 
+                        class="btn btn-primary mt-4"
+                        [disabled]="!descriptionText"
+                        (click)="sendDescriptionText()">
+                        Enviar descripción
+                    </button>
+                </div>
+
+                <div class="description-audio mt-4">
+                    <button 
+                        *ngIf="!description.finished"
+                        class="btn btn-primary" 
+                        (click)="toggleRecording()">
+                        {{ recordButtonLabel }}
+                    </button>
+
+                    <div *ngIf="blobUrl" class="recorded-audio-actions mt-4">
+                        <app-audio-player
+                            [src]="blobUrl">
+                        </app-audio-player>
+
+                        <button 
+                            *ngIf="!description.finished"
+                            class="btn btn-outline-primary" 
+                            (click)="deleteRecording()">
+                            Descartar audio
+                        </button>
+                        <button 
+                            *ngIf="!description.finished"
+                            class="btn btn-primary" 
+                            (click)="sendDescriptionAudio()">
+                            Enviar audio
+                        </button>
+                        
+                    </div>
+                </div>
+
+                <div *ngIf="description.finished && description.correction" class="description-correction mt-4">
+                    <p><strong>Puntuación:</strong> {{ description.correction.rating }}</p>
+                    <p><strong>Comentarios:</strong> {{ description.correction.comments }}</p>
+                    <p><strong>Descripción del profesor:</strong> {{ description.correction.description }}</p>
+                </div>
+
+                <div class="description-footer mt-4">
+                    <button type="button" class="btn btn-outline-primary" (click)="goBack()">Volver</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

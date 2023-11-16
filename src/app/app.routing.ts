@@ -14,6 +14,7 @@ import { WallOfFameComponent } from "./pages/wall-of-fame/container/wall-of-fame
 import { identityGuard } from "./shared/modules/user/guards/identity/identity.guard"
 import { registerGuard } from "./shared/modules/user/guards/register/register.guard"
 import { PronunciationComponent } from "./pages/pronunciation/container/pronunciation/pronunciation.component"
+import { DescriptionComponent } from "./pages/description/container/description/description.component"
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent },
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
     { path: 'free-chat/:id', component: FreeChatComponent, canActivate: [identityGuard] },
     { path: 'listening/:id', component: ListeningComponent, canActivate: [identityGuard] },
     { path: 'pronunciation/:id', component: PronunciationComponent, canActivate: [identityGuard] },
+    { path: 'description/:id', component: DescriptionComponent, canActivate: [identityGuard] },
     { path: 'my-cards', component: MyCardsComponent, canActivate: [identityGuard] },
     { path: 'my-routines', component: MyRoutinesComponent, canActivate: [identityGuard] },
     { path: 'my-routine/:id', component: MyRoutineComponent, canActivate: [identityGuard] },
