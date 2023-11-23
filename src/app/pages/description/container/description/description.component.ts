@@ -90,6 +90,7 @@ export class DescriptionComponent implements OnInit {
     this._descriptionService.getDescription(this.idDescription).subscribe(
       description => {
         this.description = description;
+        this.description.image_url = this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,'+this.description.image);
         if (description.finished) {
           if (this.description.user_solution) {
             if (this.description.user_solution.type == DescriptionSolutionType.TEXT) {
