@@ -10,8 +10,8 @@
 
             <div *ngIf="description" class="mt-5 description-container">
 
-                <div>
-                    <img class="img-fluid w-100" [src]="description.image" alt="Description image">                
+                <div *ngIf="description.image_url">
+                    <img class="img-fluid w-100" [src]="description.image_url" alt="Description image">                
                 </div>
 
                 <div class="description-text mt-4">
