@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DescriptionService } from 'src/app/pages/description/services/description.service';
 import { FreeChatService } from 'src/app/pages/free-chat/services/free-chat.service';
 import { ListeningService } from 'src/app/pages/listening/services/listening/listening.service';
 import { PronunciationService } from 'src/app/pages/pronunciation/services/pronunciation.service';
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
     private readonly _rolePlayService: RolePlayService,
     private readonly _freeChatService: FreeChatService,
     private readonly _userPreferencesService: UserPreferencesService,
+    private readonly _descriptionService: DescriptionService,
     private modalService: NgbModal,
     private readonly _infoToastService: InfoToastService,
     private router: Router,
@@ -149,6 +151,18 @@ export class HomeComponent implements OnInit {
       },
       err => {
         this._dangerToastService.show('Ha habido un error al crear el chat libre');
+        console.log(err);
+      }
+    )
+  }
+
+  startDescription() {
+    this._descriptionService.createDescription().subscribe(
+      description => {
+        this.router.navigate(['/description', description.id]);
+      },
+      err => {
+        this._dangerToastService.show('Ha habido un error al crear el ejercicio de descripción');
         console.log(err);
       }
     )

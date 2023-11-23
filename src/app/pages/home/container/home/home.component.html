@@ -40,10 +40,18 @@
                         </div>
                     </div>
                 </a>
-                <a [routerLink]="['/my-routines']">
+                <a (click)="startDescription()" role="button">
                     <div class="card border-primary mb-3" style="max-width: 18rem;">
                         <div class="card-body text-primary">
-                            <h5 class="card-title">Rutinas</h5>
+                            <h5 class="card-title">Descripción imágenes</h5>
+                            <p class="card-text">Pon a tu prueba tu capacidad de descripción mediante este ejercicio!.</p>
+                        </div>
+                    </div>
+                </a>
+                <a [routerLink]="['/my-routines']">
+                    <div class="card bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-body text-white">
+                            <h5 class="card-title text-white">Rutinas</h5>
                             <p class="card-text">Crea una rutina compuesta por varios ejercicios y un role play basado en situaciones reales.</p>
                         </div>
                     </div>
