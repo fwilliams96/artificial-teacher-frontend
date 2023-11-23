@@ -137,6 +137,7 @@ export class DescriptionComponent implements OnInit {
     this._descriptionService.deliverDescription(this.idDescription, userSolution).subscribe(
       description => {
         this.description = description;
+        this.description.image_url = this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,'+this.description.image);
         if (description.finished) {
           if (this.description.user_solution) {
             this.descriptionText = this.description.user_solution.content;
@@ -164,6 +165,7 @@ export class DescriptionComponent implements OnInit {
       this._descriptionService.deliverDescription(this.idDescription!, userSolution).subscribe(
         description => {
           this.description = description;
+          this.description.image_url = this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,'+this.description.image);
           if (description.finished) {
             if (this.description.user_solution) {
               this.blobUrl = URL.createObjectURL(this.b64toBlob(this.description.user_solution.content as string, 'audio/mp3'));
